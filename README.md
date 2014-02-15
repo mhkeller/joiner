@@ -40,12 +40,12 @@ report: {
 }
 ````
 
-__.left__ _.left(left_data, left_data_key, right_data, right_data_key, [nested_key_name])_
+__.left__ _.left(leftData, leftDataKey, rightData, rightDataKey, [nestedKeyName])_
 
 Perform a left join on the two array-of-object json datasets. Optionally, you can pass in a key name in case the left data's attribute dictionary is nested, such as in GeoJson where the attributes are under a `properties` object.
 
 
-__.geoJson__ _.geoJson(left_data, left_data_key, right_data, right_data_key, 'properties')
+__.geoJson__ _.geoJson(leftData, leftDataKey, rightData, rightDataKey, 'properties')
 
 Does the same thing as __.left__ but passes in `properties` as the nested key name.
 
