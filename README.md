@@ -53,8 +53,6 @@ _.geoJson(leftData, leftDataKey, rightData, rightDataKey, 'properties')_
 
 Does the same thing as __.left__ but passes in `properties` as the nested key name.
 
-It includes both a `summary`
-
 ## Usage
 
 See the [`examples`](https://github.com/mhkeller/joiner/examples) folder.
