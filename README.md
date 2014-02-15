@@ -55,7 +55,7 @@ Does the same thing as __.left__ but passes in `properties` as the nested key na
 
 ## Usage
 
-See the [`examples`](https://github.com/mhkeller/joiner/examples) folder.
+See the [`examples`](https://github.com/mhkeller/joiner/tree/master/examples) folder.
 
 As you can see, it puts a lot of data in memory, so it's probably best to avoid very large datasets.
 
