@@ -63,17 +63,19 @@ As you can see, it puts a lot of data in memory, so it's probably best to avoid 
 
 ````
 Usage: joiner 
-				-a FILE_PATH 
-				-k DATASET_A_KEY 
-				-b FILE_PATH 
-				-l DATASET_B_KEY 
-				-m (json|geojson)
-				-n NEST_ID 
-				-o OUT_FILE_PATH 
-				-d (summary|full)
+		-a FILE_PATH 
+		-k DATASET_A_KEY 
+		-b FILE_PATH 
+		-l DATASET_B_KEY 
+		-m (json|geojson)
+		-n NEST_ID 
+		-o OUT_FILE_PATH 
+		-d (summary|full)
 ````
 
-The first four parameters, `a`, `k`, `b` and `l` are required. `m` defaults to `json`. `-m geojson` acts the same as the `.geoJson` methoda above. 
+The first four parameters, `a`, `k`, `b` and `l` are required. 
+
+`m` defaults to `json`. `-m geojson` acts the same as the `.geoJson` methoda above. 
 
 Supported input and output formats: `json`, `csv`, `csv`, `psv`. Format will be inferred from the file ending on both input and output file paths. For example, `-a path/to/input/file.csv` will read in a csv. `-o path/to/output/file.csv` will write a csv.
 
