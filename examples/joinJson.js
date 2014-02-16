@@ -6,16 +6,16 @@ var data_key   = 'name',
 var data = [ 
 		{
 			"name": 'AK',
-			"geom": '1'
+			"id": '1'
 		},{ 
 			"name": 'CA',
-			"geom": '2'
+			"id": '2'
 		},{ 
 			"name": 'NY',
-			"geom": '3'
+			"id": '3'
 		},{
 			"name": 'LA',
-			"geom": '4'
+			"id": '4'
 		}
 	]
 

@@ -1,5 +1,6 @@
 var _ = require('underscore')
 
+var geojson;
 var joinr_report_data = {
 	a_keys: [],
 	b_keys: []
@@ -59,6 +60,7 @@ function indexRightDataOnKey(right_data, right_key_column){
 }
 
 function joinOnMatch(left_data, left_key_column, key_map, path){
+	if (geojson) left_data = left_data.features
 	left_data.forEach(function(datum){
 		if (path) datum = datum[path] 
 		var left_key_value   = datum[left_key_column],
@@ -128,6 +130,7 @@ function joinDataLeft(left_data, left_key_column, right_data, right_key_column, 
 
 function joinGeoJson(left_data, left_key_column, right_data, right_key_column, path){
 	if (!path) path = 'properties';
+	geojson = true;
 	return joinDataLeft(left_data, left_key_column, right_data, right_key_column, path);
 }
 
