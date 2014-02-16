@@ -42,22 +42,22 @@ console.log(joined_data)
   "data": [
     {
       "name": "AK",
-      "geom": "1",
+      "id": "1",
       "avg_temp": 34
     },
     {
       "name": "CA",
-      "geom": "2",
+      "id": "2",
       "avg_temp": 72
     },
     {
       "name": "NY",
-      "geom": "3",
+      "id": "3",
       "avg_temp": 45
     },
     {
       "name": "LA",
-      "geom": "4",
+      "id": "4",
       "avg_temp": null
     }
   ],
