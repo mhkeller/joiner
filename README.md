@@ -34,7 +34,7 @@ report: {
 		b_not_in_a: [data in B not in A]
 	}:
 	prose: {
-		summary: [summary description of join result, matches in A and B, A not in B, B not in A.]
+		summary: [summary description of join result, number of matches in A and B, A not in B, B not in A.]
 		full:    [full list of which rows were joined in each of the above categories]
 	}
 }
