@@ -101,7 +101,7 @@ function writeDataSync(file_path, data){
 }
 
 function writeReportSync(file_path, report){
-	file_path = JSON.stringify(file_path.replace(discernFormat(file_path), '').replace('.','') + '-report.json')
+	file_path = JSON.stringify(file_path.replace(discernFormat(file_path), '').replace('.','') + '-report.json', null, 2)
 	fs.WriteFileSync(file_path, report)
 }
 
