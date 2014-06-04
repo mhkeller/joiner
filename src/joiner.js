@@ -105,7 +105,7 @@ function createJoinReport(){
         report.prose.summary += 'All ' + report.diff.b.length + ' rows in B in A. '
       } else {
         report.prose.summary += report.diff.b_not_in_a.length + ' rows in B not in A. '
-        report.prose.full += 'B not in A: ' + report.b_not_in_a.join(', ') + '. '
+        report.prose.full += 'B not in A: ' + report.diff.b_not_in_a.join(', ') + '. '
       }
 
     } else {
@@ -114,17 +114,19 @@ function createJoinReport(){
 
   }
 
-	return report
+	return report;
 }
 
 function joinDataLeft(left_data, left_key_column, right_data, right_key_column, path){
-	resetJoinrReport()
+	resetJoinrReport();
 
 	var key_map             = indexRightDataOnKey(right_data, right_key_column),
 			joined_data         = joinOnMatch(left_data, left_key_column, key_map, path),
 			joined_data_w_nulls = addNulls(joined_data, key_map.null_match, path);
 
-	var report = createJoinReport()
+	var report = createJoinReport();
+	// If its geojson, nest the collection back under a `FeatureCollection`
+	if (geojson) joined_data_w_nulls = { type: 'FeatureCollection',  features: joined_data_w_nulls };
 	return {data: joined_data_w_nulls, report: report};
 }
 
