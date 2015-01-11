@@ -77,7 +77,7 @@ The first four parameters, `-a`, `-k`, `-b` and `-l` are required.
 
 If you specify an output file, it will write the join report to the same directory. For example, `-o path/to/output.csv` will also write `-o path/to/output-report.json`
 
-`-m` defaults to `json`. `-m geojson` acts the same as the `.geoJson` methoda above. 
+`-m` defaults to `json`. `-m geojson` acts the same as the `.geoJson` method above. 
 
 Supported input and output formats: `json`, `csv`, `csv`, `psv`. Format will be inferred from the file ending on both input and output file paths. For example, `-a path/to/input/file.csv` will read in a csv. `-o path/to/output/file.csv` will write a csv.
 

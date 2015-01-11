@@ -1,6 +1,6 @@
 {
   "name": "joiner",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "description": "A simple utility for SQL-like joins with Json or GeoJson data. Also creates join reports so you can know how successful a given join was.",
   "main": "src/joiner.js",
   "directories": {
@@ -8,6 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "joiner": "./bin/index.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,8 @@
   },
   "homepage": "https://github.com/mhkeller/joiner",
   "dependencies": {
+    "dsv": "0.0.4",
+    "optimist": "^0.6.1",
     "underscore": "~1.6.0"
   }
 }
