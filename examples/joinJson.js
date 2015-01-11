@@ -1,4 +1,4 @@
-var joiner = require('../src/joiner.js');
+var joiner = require('../src/index.js');
 
 var data_key   = 'name',
 		new_data_key = 'state_name';

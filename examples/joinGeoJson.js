@@ -1,5 +1,5 @@
 var fs = require('fs'),
-    joiner = require('../src/joiner.js');
+    joiner = require('../src/index.js');
 
 var geo_key   = 'name',
 		value_key = 'state_name';
