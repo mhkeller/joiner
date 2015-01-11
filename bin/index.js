@@ -4,7 +4,7 @@ var fs       = require('fs'),
 		dsv      = require('dsv'),
 		optimist = require('optimist'),
 		_        = require('underscore'),
-		joiner   = require('../src/joiner.js');
+		joiner   = require('../src/index.js');
 
 var argv = optimist
   .usage('Usage: joiner -a FILE_PATH -k DATASET_A_KEY -b FILE_PATH -l DATASET_B_KEY -m (json|geojson) -n NEST_ID -o OUT_FILE_PATH -d (summary|full)')
