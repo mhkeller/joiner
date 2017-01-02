@@ -74,8 +74,8 @@ var reportDesc = argv.r || argv['report']
 
 var q = queue()
 
-var loadFnA = geDbfOrDataParser(aPath)
-var loadFnB = geDbfOrDataParser(bPath) === 'dbf' ? io.readDbf : io.readData
+var loadFnA = getDbfOrDataLoader(aPath)
+var loadFnB = getDbfOrDataLoader(bPath)
 
 q.defer(loadFnA, aPath)
 q.defer(loadFnB, bPath)
@@ -99,7 +99,12 @@ q.await(function (err, aData, bData) {
   var jd = joiner[format](config)
 
   if (outPath !== null) {
-    io.writeDataSync(outPath, jd.data)
+    io.writeData(outPath, jd.data, function (err) {
+      if (err) {
+        console.error('Error writing data file', outPath)
+        throw new Error(err)
+      }
+    })
     io.writeDataSync(stripExtension(outPath) + 'report.json', jd.report)
   } else {
     if (reportDesc === 'summary') {
@@ -110,7 +115,7 @@ q.await(function (err, aData, bData) {
   }
 })
 
-function geDbfOrDataParser (path) {
+function getDbfOrDataLoader (path) {
   io.discernParser(path) === 'dbf' ? io.readDbf : io.readData
 }
 
