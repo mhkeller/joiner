@@ -1,21 +1,19 @@
 #!/usr/bin/env node
 
-var fs       = require('fs'),
-		dsv      = require('dsv'),
-		optimist = require('optimist'),
-		_        = require('underscore'),
-		joiner   = require('../src/index.js');
+var io = require('indian-ocean')
+var optimist = require('optimist')
+var joiner = require('../src/index.js')
 
 var argv = optimist
-  .usage('Usage: joiner -a FILE_PATH -k DATASET_A_KEY -b FILE_PATH -l DATASET_B_KEY -m (json|geojson) -n NEST_ID -o OUT_FILE_PATH -d (summary|full)')
+  .usage('Usage: joiner -a DATASET_A_PATH -k DATASET_A_KEY -b DATASET_B_PATH -l DATASET_B_KEY -m (json|geojson) -n NEST_ID -o OUT_FILE_PATH -d (summary|full)')
   .options('h', {
     alias: 'help',
     describe: 'Display help',
     default: false
   })
   .options('a', {
-    alias: 'adata',
-    describe: 'Dataset A',
+    alias: 'apath',
+    describe: 'Dataset A path',
     default: null
   })
   .options('k', {
@@ -24,8 +22,8 @@ var argv = optimist
     default: null
   })
   .options('b', {
-    alias: 'bdata',
-    describe: 'Dataset B',
+    alias: 'bpath',
+    describe: 'Dataset B path',
     default: null
   })
   .options('l', {
@@ -33,114 +31,75 @@ var argv = optimist
     describe: 'Dataset B key',
     default: null
   })
-  .options('m', {
-    alias: 'mode',
+  .options('f', {
+    alias: 'format',
     describe: 'json or geojson',
     default: 'json'
   })
-  .options('n', {
-    alias: 'nester',
-    describe: 'Nested id',
-    default: false
+  .options('p', {
+    alias: 'path',
+    describe: 'Nested path id',
+    default: null
   })
   .options('o', {
     alias: 'out',
-    describe: 'Out file',
-    default: false
+    describe: 'Out path',
+    default: null
   })
   .options('r', {
     alias: 'report',
     describe: 'Report format',
     default: 'summary'
   })
-  .check(function(argv) {
-    if ( (!argv['a'] || !argv['adata']) &&  (!argv['a'] || !argv['adata']) && (!argv['b'] || !argv['bdata']) && (!argv['k'] || !argv['akey']) && (!argv['l'] || !argv['bkey']) ) throw 'What do you want to do?';
+  .check(function (argv) {
+    if ((!argv['a'] || !argv['adata']) && (!argv['a'] || !argv['adata']) && (!argv['b'] || !argv['bdata']) && (!argv['k'] || !argv['akey']) && (!argv['l'] || !argv['bkey'])) {
+      throw 'What do you want to do?' // eslint-disable-line no-throw-literal
+    }
   })
-  .argv;
+  .argv
 
-if (argv.h || argv.help) return optimist.showHelp();
-
-var adata        = argv.a  || argv['adata'],
-		akey         = argv.k  || argv['akey'],
-		bdata        = argv.b  || argv['bdata'],
- 		bkey         = argv.l  || argv['bkey'],
- 		format       = argv.m  || argv['mode'],
- 		nester       = argv.n  || argv['nester'],
- 		out_file     = argv.o  || argv['out'],
- 		report_desc  = argv.r  || argv['report'];
-
-// Given a file name, get its extension
-function discernFormat(file_name) {
-  var name_arr = file_name.split('\.')
-  format_name = name_arr[name_arr.length - 1];
-  return format_name
+if (argv.h || argv.help) {
+  optimist.showHelp()
 }
 
-function discernFileFormatter(file_name){
-	var format    = discernFormat(file_name);
-	var formatMap = {
-		json: function(file){
-			return JSON.stringify(file)
-		},
-		csv: function(file){
-			return dsv.csv.format(file)
-		},
-		tsv: function(file){
-			return dsv.tsv.format(file)
-		},
-		psv: function(file){
-			return dsv.dsv('|').format(file)
-		}
-	}
-	return formatMap[format]
+var aPath = argv.a || argv['apath']
+var aKey = argv.k || argv['akey']
+var bPath = argv.b || argv['bpath']
+var bKey = argv.l || argv['bkey']
+var format = argv.f || argv['format']
+var path = argv.p || argv['path']
+var outPath = argv.o || argv['out']
+var reportDesc = argv.r || argv['report']
+
+var aData = io.readDataSync(aPath)
+var bData = io.readDataSync(bPath)
+
+var config = {
+  leftData: aData,
+  leftDataKey: aKey,
+  rightData: bData,
+  rightDataKey: bKey,
+  path: path
 }
-
-function writeDataSync(file_path, data){
-	var fileFormatter = discernFileFormatter(file_path);
-	fs.WriteFileSync(file_path, fileFormatter(data))
-}
-
-function writeReportSync(file_path, report){
-	file_path = JSON.stringify(file_path.replace(discernFormat(file_path), '').replace('.','') + '-report.json', null, 2)
-	fs.WriteFileSync(file_path, report)
-}
-
-
-// Given a file name, return teh appropriate date parser
-function discernParser(file_name) {
-  var format = discernFormat(file_name);
-  var parserMap = {
-    json: JSON.parse,
-    csv: dsv.csv.parse,
-    tsv: dsv.tsv.parse,
-    psv: dsv.dsv('|').parse
-  }
-  return parserMap[format]
-}
-
-// Parse data
-var aparser = discernParser(adata),
-		bparser = discernParser(bdata);
-adata = aparser(adata)
-bdata = bparser(bdata)
 
 // Join data
-var jd;
-if (format != 'geojson'){
-	jd = joiner.left(adata, akey, bdata, bkey, nester)
-}else{
-	jd = joiner.geoJson(adata, akey, bdata, bkey, nester)
+if (format !== 'json' && format !== 'geojson') {
+  throw new Error('Format must be either json or geojson')
+}
+var jd = joiner[format](config)
+
+if (outPath !== null) {
+  io.writeDataSync(outPath, jd.data)
+  io.writeDataSync(stripExtension(outPath) + 'report.json', jd.report)
+} else {
+  if (reportDesc === 'summary') {
+    console.log(jd.report.prose.summary)
+  } else {
+    console.log(jd.report.prose.full)
+  }
 }
 
-if (out_file){
-	writeDataSync(out_file, jd.data)
-	writeReportSync(out_file, jd.report)
-}else{
-	if (report_desc == 'summary'){
-		console.log(jd.report.prose.summary)
-	}else{
-		console.log(jd.report.prose.full)
-	}
+function stripExtension (fullPath) {
+  var ext = io.discernFormat(fullPath)
+  return fullPath.replace(ext, '')
 }
-
-

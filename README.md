@@ -8,7 +8,7 @@ A simple utility for SQL-like joins with Json or GeoJson data. Also creates join
 To install as a Node.js module:
 
 ````
-npm install joiner
+npm install --save joiner
 ````
 
 Or to install as a command-line utility:
@@ -40,18 +40,30 @@ report: {
 }
 ````
 
-__.left__ 
+### .left(config)
 
-_.left(leftData, leftDataKey, rightData, rightDataKey, [nestedKeyName])_
+Perform a left join on the two array of object json datasets. Optionally, you can pass in a key name under `path` in case the left data's attribute dictionary is nested.
 
-Perform a left join on the two array-of-object json datasets. Optionally, you can pass in a key name in case the left data's attribute dictionary is nested, such as in GeoJson where the attributes are under a `properties` object.
+| parameter    | type     | description    |
+| :------------|:-------- |:---------------|
+| leftData     | Array    | existing data  |
+| leftDataKey  | String   | key to join on |
+| rightData    | Array    | new data       |
+| rightDataKey | String   | key to join on |
+| path         | [String] | optional, key name of attribute |
 
 
-__.geoJson__ 
+### .geoJson(config)
 
-_.geoJson(leftData, leftDataKey, rightData, rightDataKey, 'properties')_
+Performs a left join on the `properties` object of each feature in a geojson array. By default it will join on the `id` property. You can also join on a value in the `properties` object by setting `leftDataKey` to the desired key name and `path` to the string `'properties'`.
 
-Does the same thing as __.left__ but passes in `properties` as the nested key name.
+| parameter    | type     | description    |
+| -------------|--------- |----------------|
+| leftData     | Array    | existing data  |
+| leftDataKey  | [String] default='id'| Optional, key to join on |
+| rightData    | Array    | new data       |
+| rightDataKey | String   | key to join on |
+| path         | [String] | optional, key name of attribute |
 
 ## Usage
 
@@ -62,22 +74,22 @@ As you can see, it puts a lot of data in memory, so it's probably best to avoid 
 ## Command line interface
 
 ````
-Usage: joiner 
-		-a FILE_PATH 
-		-k DATASET_A_KEY 
-		-b FILE_PATH 
-		-l DATASET_B_KEY 
-		-m (json|geojson) # defaults to `json`
-		-n NEST_ID 
-		-o OUT_FILE_PATH 
+Usage: joiner
+		-a DATASET_A_PATH
+		-k DATASET_A_KEY
+		-b DATASET_B_PATH
+		-l DATASET_B_KEY
+		-f (json|geojson) # defaults to `json`
+		-p NESTED_PATH_ID
+		-o OUT_FILE_PATH
 		-d (summary|full) # defaults to `summary`
 ````
 
-The first four parameters, `-a`, `-k`, `-b` and `-l` are required. 
+The first four parameters, `-a`, `-k`, `-b` and `-l` are required.
 
 If you specify an output file, it will write the join report to the same directory. For example, `-o path/to/output.csv` will also write `-o path/to/output-report.json`
 
-`-m` defaults to `json`. `-m geojson` acts the same as the `.geoJson` method above. 
+`-f` defaults to `json`. `-f geojson` acts the same as the `.geoJson` method above.
 
 Supported input and output formats: `json`, `csv`, `csv`, `psv`. Format will be inferred from the file ending on both input and output file paths. For example, `-a path/to/input/file.csv` will read in a csv. `-o path/to/output/file.csv` will write a csv.
 
