@@ -3,6 +3,7 @@
 var io = require('indian-ocean')
 var optimist = require('optimist')
 var joiner = require('../src/index.js')
+var queue = require('d3-queue').queue
 
 var argv = optimist
   .usage('Usage: joiner -a DATASET_A_PATH -k DATASET_A_KEY -b DATASET_B_PATH -l DATASET_B_KEY -m (json|geojson) -n NEST_ID -o OUT_FILE_PATH -d (summary|full)')
@@ -71,32 +72,46 @@ var path = argv.p || argv['path']
 var outPath = argv.o || argv['out']
 var reportDesc = argv.r || argv['report']
 
-var aData = io.readDataSync(aPath)
-var bData = io.readDataSync(bPath)
+var q = queue()
 
-var config = {
-  leftData: aData,
-  leftDataKey: aKey,
-  rightData: bData,
-  rightDataKey: bKey,
-  path: path
-}
+var loadFnA = geDbfOrDataParser(aPath)
+var loadFnB = geDbfOrDataParser(bPath) === 'dbf' ? io.readDbf : io.readData
 
-// Join data
-if (format !== 'json' && format !== 'geojson') {
-  throw new Error('Format must be either json or geojson')
-}
-var jd = joiner[format](config)
+q.defer(loadFnA, aPath)
+q.defer(loadFnB, bPath)
 
-if (outPath !== null) {
-  io.writeDataSync(outPath, jd.data)
-  io.writeDataSync(stripExtension(outPath) + 'report.json', jd.report)
-} else {
-  if (reportDesc === 'summary') {
-    console.log(jd.report.prose.summary)
-  } else {
-    console.log(jd.report.prose.full)
+q.await(function (err, aData, bData) {
+  if (err) {
+    throw new Error(err)
   }
+  var config = {
+    leftData: aData,
+    leftDataKey: aKey,
+    rightData: bData,
+    rightDataKey: bKey,
+    path: path
+  }
+
+  // Join data
+  if (format !== 'json' && format !== 'geojson') {
+    throw new Error('Format must be either json or geojson')
+  }
+  var jd = joiner[format](config)
+
+  if (outPath !== null) {
+    io.writeDataSync(outPath, jd.data)
+    io.writeDataSync(stripExtension(outPath) + 'report.json', jd.report)
+  } else {
+    if (reportDesc === 'summary') {
+      console.log(jd.report.prose.summary)
+    } else {
+      console.log(jd.report.prose.full)
+    }
+  }
+})
+
+function geDbfOrDataParser (path) {
+  io.discernParser(path) === 'dbf' ? io.readDbf : io.readData
 }
 
 function stripExtension (fullPath) {

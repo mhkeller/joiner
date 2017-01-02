@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/mhkeller/joiner",
   "dependencies": {
+    "d3-queue": "^3.0.3",
     "indian-ocean": "^2.0.1",
     "optimist": "^0.6.1",
     "standard": "^8.6.0",
