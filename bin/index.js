@@ -32,10 +32,11 @@ var argv = optimist
     describe: 'Dataset B key',
     default: null
   })
-  .options('f', {
-    alias: 'format',
-    describe: 'json or geojson',
-    default: 'json'
+  .options('g', {
+    alias: 'geojson',
+    describe: 'Are you joining geojson?',
+    default: false,
+    boolean: true
   })
   .options('p', {
     alias: 'path',
@@ -67,7 +68,7 @@ var aPath = argv.a || argv['apath']
 var aKey = argv.k || argv['akey']
 var bPath = argv.b || argv['bpath']
 var bKey = argv.l || argv['bkey']
-var format = argv.f || argv['format']
+var geojson = argv.g || argv['geojson']
 var path = argv.p || argv['path']
 var outPath = argv.o || argv['out']
 var reportDesc = argv.r || argv['report']
@@ -92,20 +93,18 @@ q.await(function (err, aData, bData) {
     path: path
   }
 
-  // Join data
-  if (format !== 'json' && format !== 'geojson') {
-    throw new Error('Format must be either json or geojson')
-  }
-  var jd = joiner[format](config)
+  var fn = geojson === true ? 'geoJson' : 'left'
 
+  // Join data
+  var jd = joiner[fn](config)
   if (outPath !== null) {
-    io.writeData(outPath, jd.data, function (err) {
+    io.writeData(outPath, jd.data, {makeDirectories: true}, function (err) {
       if (err) {
         console.error('Error writing data file', outPath)
         throw new Error(err)
       }
     })
-    io.writeDataSync(stripExtension(outPath) + 'report.json', jd.report)
+    io.writeDataSync(stripExtension(outPath) + 'report.json', jd.report, {makeDirectories: true})
   } else {
     if (reportDesc === 'summary') {
       console.log(jd.report.prose.summary)
@@ -116,10 +115,10 @@ q.await(function (err, aData, bData) {
 })
 
 function getDbfOrDataLoader (path) {
-  io.discernParser(path) === 'dbf' ? io.readDbf : io.readData
+  return io.discernParser(path) === 'dbf' ? io.readDbf : io.readData
 }
 
 function stripExtension (fullPath) {
   var ext = io.discernFormat(fullPath)
-  return fullPath.replace(ext, '')
+  return fullPath.replace(new RegExp(ext + '$', 'g'), '')
 }

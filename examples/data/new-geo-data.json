@@ -1,0 +1,17 @@
+[
+  {
+    "state_abbr": "CO",
+    "state_name": "Colorado",
+    "avg_temp": 34
+  },
+  {
+    "state_abbr": "UT",
+    "state_name": "Utah",
+    "avg_temp": 72
+  },
+  {
+    "state_abbr": "NM",
+    "state_name": "New Mexico",
+    "avg_temp": 45
+  }
+]

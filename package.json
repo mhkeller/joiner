@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "standard && mocha"
+    "test": "mocha"
   },
   "bin": {
     "joiner": "./bin/index.js"
@@ -31,12 +31,14 @@
   "dependencies": {
     "d3-queue": "^3.0.3",
     "indian-ocean": "^2.0.1",
+    "lodash.clonedeep": "^4.5.0",
     "optimist": "^0.6.1",
     "standard": "^8.6.0",
     "underscore": "~1.6.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "rimraf": "^2.5.4"
   }
 }

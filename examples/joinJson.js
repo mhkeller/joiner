@@ -1,35 +1,41 @@
+var fs = require('fs')
 var joiner = require('../src/index.js')
 
-var data = [
+var data = JSON.parse(fs.readFileSync('examples/data/left-data.json'))
+/*
+[
   {
-    'name': 'AK',
-    'id': '1'
+    "id": "1",
+    "name": "UT"
   }, {
-    'name': 'CA',
-    'id': '2'
+    "id": "2",
+    "name": "WY"
   }, {
-    'name': 'NY',
-    'id': '3'
+    "id": "3",
+    "name": "CO"
   }, {
-    'name': 'LA',
-    'id': '4'
+    "id": "4",
+    "name": "NM"
   }
 ]
-
-var newData = [
+*/
+var newData = JSON.parse(fs.readFileSync('examples/data/new-data.json'))
+/*
+[
   {
-    'state_name': 'AK',
-    'avg_temp': 34
+    "state_name": "CO",
+    "avg_temp": 34
   },
   {
-    'state_name': 'CA',
-    'avg_temp': 72
+    "state_name": "UT",
+    "avg_temp": 72
   },
   {
-    'state_name': 'NY',
-    'avg_temp': 45
+    "state_name": "NM",
+    "avg_temp": 45
   }
 ]
+*/
 
 var joinedData = joiner.left({
   leftData: data,
@@ -37,60 +43,60 @@ var joinedData = joiner.left({
   rightData: newData,
   rightDataKey: 'state_name'
 })
+
 console.log(joinedData)
 
 /*
 {
   "data": [
     {
-      "name": "AK",
       "id": "1",
-      "avg_temp": 34
-    },
-    {
-      "name": "CA",
-      "id": "2",
+      "name": "UT",
       "avg_temp": 72
     },
     {
-      "name": "NY",
-      "id": "3",
-      "avg_temp": 45
+      "id": "2",
+      "name": "WY",
+      "avg_temp": null
     },
     {
-      "name": "LA",
+      "id": "3",
+      "name": "CO",
+      "avg_temp": 34
+    },
+    {
       "id": "4",
-      "avg_temp": null
+      "name": "NM",
+      "avg_temp": 45
     }
   ],
   "report": {
     "diff": {
       "a": [
-        "AK",
-        "CA",
-        "NY",
-        "LA"
+        "UT",
+        "WY",
+        "CO",
+        "NM"
       ],
       "b": [
-        "AK",
-        "CA",
-        "NY"
+        "CO",
+        "UT",
+        "NM"
       ],
       "a_and_b": [
-        "AK",
-        "CA",
-        "NY"
+        "UT",
+        "CO",
+        "NM"
       ],
       "a_not_in_b": [
-        "LA"
+        "WY"
       ],
       "b_not_in_a": []
     },
     "prose": {
-      "summary": "3 rows matched in A and B. 1 rows in A not in B. All 3 rows in B in A. ",
-      "full": "Matches in A and B: AK, CA, NY. A not in B: LA. "
+      "summary": "3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.",
+      "full": "Matches in A and B: UT, CO, NM. A not in B: WY."
     }
   }
 }
-
 */

@@ -84,13 +84,13 @@ Usage: joiner
 		-l DATASET_B_KEY
 		-f (json|geojson) # defaults to `json`
 		-p NESTED_PATH_ID
-		-o OUT_FILE_PATH
+		-o OUT_FILE_PATH # Where to save the file, will write intermediate directories if they don't exist
 		-d (summary|full) # defaults to `summary`
 ````
 
 The first four parameters, `-a`, `-k`, `-b` and `-l` are required.
 
-If you specify an output file, it will write the join report to the same directory. For example, `-o path/to/output.csv` will also write `-o path/to/output-report.json`
+If you specify an output file, it will write the join result to the specified path and the report to the same directory, creating directories if they don't already exist. For example, `-o path/to/output.csv` will also write `-o path/to/output-report.json`.
 
 `-f` defaults to `json`. `-f geojson` acts the same as the `.geoJson` method above.
 
