@@ -61,20 +61,20 @@ function indexRightDataOnKey (rightData, rightKeyColumn) {
   return keyMap
 }
 
-function joinOnMatch (leftData, leftKeyColumn, keyMap, path) {
+function joinOnMatch (leftData, leftKeyColumn, keyMap, nestKey) {
   if (geojson) {
     leftData = leftData.features
   }
 
   leftData.forEach(function (datum) {
-    if (path) {
-      datum = datum[path]
+    if (nestKey) {
+      datum = datum[nestKey]
     }
     var leftKeyValue = datum[leftKeyColumn]
     var match = keyMap[leftKeyValue]
     reportData.a_keys.push(leftKeyValue)
     if (match) {
-      if (!path && geojson) {
+      if (!nestKey && geojson) {
         _.extend(datum.properties || {}, match)
       } else {
         _.extend(datum, match)
@@ -136,13 +136,13 @@ function joinDataLeft (config) {
   var leftDataKey = config.leftDataKey
   var rightData = cloneDeep(config.rightData)
   var rightDataKey = config.rightDataKey
-  var path = config.path
+  var nestKey = config.nestKey
 
   resetJoinrReport()
 
   var keyMap = indexRightDataOnKey(rightData, rightDataKey)
-  var joinedData = joinOnMatch(leftData, leftDataKey, keyMap, path)
-  var joinedDataWithNull = addNulls(joinedData, keyMap.null_match, path)
+  var joinedData = joinOnMatch(leftData, leftDataKey, keyMap, nestKey)
+  var joinedDataWithNull = addNulls(joinedData, keyMap.null_match, nestKey)
 
   var report = createJoinReport()
   // If it's geojson, nest the collection back under a `FeatureCollection`

@@ -6,7 +6,7 @@ var joiner = require('../src/index.js')
 var queue = require('d3-queue').queue
 
 var argv = optimist
-  .usage('Usage: joiner -a DATASET_A_PATH -k DATASET_A_KEY -b DATASET_B_PATH -l DATASET_B_KEY -m (json|geojson) -n NEST_ID -o OUT_FILE_PATH -d (summary|full)')
+  .usage('Usage: joiner -a DATASET_A_PATH -k DATASET_A_KEY -b DATASET_B_PATH -j DATASET_B_KEY -o OUT_FILE_PATH [-r (summary|full) -n NEST_KEY --geojson]')
   .options('h', {
     alias: 'help',
     describe: 'Display help',
@@ -14,39 +14,33 @@ var argv = optimist
   })
   .options('a', {
     alias: 'apath',
-    describe: 'Dataset A path',
-    default: null
+    describe: 'Dataset A path'
   })
   .options('k', {
     alias: 'akey',
-    describe: 'Dataset A key',
-    default: null
+    describe: 'Dataset A key'
   })
   .options('b', {
     alias: 'bpath',
-    describe: 'Dataset B path',
-    default: null
+    describe: 'Dataset B path'
   })
-  .options('l', {
+  .options('j', {
     alias: 'bkey',
-    describe: 'Dataset B key',
-    default: null
+    describe: 'Dataset B key'
   })
   .options('g', {
     alias: 'geojson',
-    describe: 'Are you joining geojson?',
+    describe: 'Is dataset A geojson?',
     default: false,
     boolean: true
   })
-  .options('p', {
-    alias: 'path',
-    describe: 'Nested path id',
-    default: null
+  .options('n', {
+    alias: 'nestkey',
+    describe: 'Nested key name'
   })
   .options('o', {
     alias: 'out',
-    describe: 'Out path',
-    default: null
+    describe: 'Out path'
   })
   .options('r', {
     alias: 'report',
@@ -54,7 +48,7 @@ var argv = optimist
     default: 'summary'
   })
   .check(function (argv) {
-    if ((!argv['a'] || !argv['adata']) && (!argv['a'] || !argv['adata']) && (!argv['b'] || !argv['bdata']) && (!argv['k'] || !argv['akey']) && (!argv['l'] || !argv['bkey'])) {
+    if ((!argv['a'] || !argv['adata']) && (!argv['a'] || !argv['adata']) && (!argv['b'] || !argv['bdata']) && (!argv['k'] || !argv['akey']) && (!argv['j'] || !argv['bkey'])) {
       throw 'What do you want to do?' // eslint-disable-line no-throw-literal
     }
   })
@@ -67,9 +61,9 @@ if (argv.h || argv.help) {
 var aPath = argv.a || argv['apath']
 var aKey = argv.k || argv['akey']
 var bPath = argv.b || argv['bpath']
-var bKey = argv.l || argv['bkey']
+var bKey = argv.j || argv['bkey']
 var geojson = argv.g || argv['geojson']
-var path = argv.p || argv['path']
+var nestKey = argv.n || argv['nestkey']
 var outPath = argv.o || argv['out']
 var reportDesc = argv.r || argv['report']
 
@@ -90,7 +84,7 @@ q.await(function (err, aData, bData) {
     leftDataKey: aKey,
     rightData: bData,
     rightDataKey: bKey,
-    path: path
+    nestKey: nestKey
   }
 
   var fn = geojson === true ? 'geoJson' : 'left'

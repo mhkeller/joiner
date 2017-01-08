@@ -45,7 +45,7 @@ report: {
 
 ### .left(config)
 
-Perform a left join on the two array of object json datasets. Optionally, you can pass in a key name under `path` in case the left data's attribute dictionary is nested.
+Perform a left join on the two array of object json datasets. It performs a [deep clone](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object. Optionally, you can pass in a key name under `nestKey` in case the left data's attribute dictionary is nested.
 
 | parameter    | type     | description    |
 | :------------|:-------- |:---------------|
@@ -53,12 +53,14 @@ Perform a left join on the two array of object json datasets. Optionally, you ca
 | leftDataKey  | String   | key to join on |
 | rightData    | Array    | new data       |
 | rightDataKey | String   | key to join on |
-| path         | [String] | optional, key name of attribute |
+| nestKey      | [String] | optional, key name holding attribute |
 
 
 ### .geoJson(config)
 
-Performs a left join on the `properties` object of each feature in a geojson array. By default it will join on the `id` property. You can also join on a value in the `properties` object by setting `leftDataKey` to the desired key name and `path` to the string `'properties'`.
+Performs a left join onto the `properties` object of each feature in a geojson array. It performs a deep clone using [lodash.clonedeep](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object.
+
+By default it will join on the `id` property. You can also join on a value in the `properties` object by setting `leftDataKey` to the desired key name and `nestKey` to the string `'properties'`.
 
 | parameter    | type     | description    |
 | -------------|--------- |----------------|
@@ -66,34 +68,36 @@ Performs a left join on the `properties` object of each feature in a geojson arr
 | leftDataKey  | [String] default='id'| Optional, key to join on |
 | rightData    | Array    | new data       |
 | rightDataKey | String   | key to join on |
-| path         | [String] | optional, key name of attribute |
+| nestKey      | [String] | optional, key name holding attribute |
 
 ## Usage
 
 See the [`examples`](https://github.com/mhkeller/joiner/tree/master/examples) folder.
 
-As you can see, it puts a lot of data in memory, so it's probably best to avoid very large datasets.
-
 ## Command line interface
 
 ````
-Usage: joiner
-		-a DATASET_A_PATH
-		-k DATASET_A_KEY
-		-b DATASET_B_PATH
-		-l DATASET_B_KEY
-		-f (json|geojson) # defaults to `json`
-		-p NESTED_PATH_ID
-		-o OUT_FILE_PATH # Where to save the file, will write intermediate directories if they don't exist
-		-d (summary|full) # defaults to `summary`
+Usage: joiner -a DATASET_A_PATH -k DATASET_A_KEY -b DATASET_B_PATH -j DATASET_B_KEY -o OUT_FILE_PATH [-r (summary|full) -n NEST_KEY --geojson]
+
+Options:
+  -h, --help     Display help           [default: false]
+  -a, --apath    Dataset A path
+  -k, --akey     Dataset A key
+  -b, --bpath    Dataset B path
+  -j, --bkey     Dataset B key
+  -g, --geojson  Is dataset A geojson?  [default: false]
+  -n, --nestkey  Nested key name
+  -o, --out      Out path
+  -r, --report   Report format          [default: "summary"]
+
 ````
 
-The first four parameters, `-a`, `-k`, `-b` and `-l` are required.
+In most cases, the first four parameters (`--apath`, `--akey`, `--bpath` and `--bkey`) are required. `--akey` is not required if you have set geojson to true by using `-g` or `--geojson` since it will join on the `"id"` field. If you want to join on a property field in geojson, then set that using `--akey`.
 
-If you specify an output file, it will write the join result to the specified path and the report to the same directory, creating directories if they don't already exist. For example, `-o path/to/output.csv` will also write `-o path/to/output-report.json`.
+If you specify an output file, it will write the join result to the specified file and the report to the same directory. Intermediate directories will be created if they don't already exist. For example, `-o path/to/output.csv` will also write `-o path/to/output-report.json` and create the `to/` folder if it isn't already there. If you don't specify an output file, it will print the results to the console.
 
-`-f` defaults to `json`. `-f geojson` acts the same as the `.geoJson` method above.
+If you don't specify an output file with `-o`, Joiner will print the join report to the console. By default, it will just specify the summary report. To print the full report, specify `-d full`.
 
-Supported input and output formats: `json`, `csv`, `csv`, `psv`. Format will be inferred from the file ending on both input and output file paths. For example, `-a path/to/input/file.csv` will read in a csv. `-o path/to/output/file.csv` will write a csv.
+Setting `-g` or `--geojson` is the equivalent of `.geoJson` above.
 
-If you don't specify an output file with `-o`, Joiner will print the join report to the console. By default it will just specify the summary report. To print the full report, specify `-d full`.
+It converts the specified input file into json and writes the joined dataset to file using [indian ocean](https://github.com/mhkeller/indian-ocean), which currently supports the following formats: `json`, `geojson`, `csv`, `psv`, `tsv` and `dbf`. The format is inferred from the file extension of the input and output file paths. For example, `-a path/to/input/file.csv` will read in a csv and `-o path/to/output/file.csv` will write a csv.
