@@ -81,7 +81,7 @@ report: {
 }
 ````
 
-### joiner(config)
+### _joiner(config)_
 
 Perform a left join on the two array of object json datasets. It performs a deep clone using [lodash.clonedeep](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object.
 
@@ -93,7 +93,7 @@ Optionally, you can pass in a key name under `nestKey` in case the left data's a
 | leftDataKey  | [String] | key to join on, defaults to `"id"` if `geoJson: true`  |
 | rightData    | Array    | new data       |
 | rightDataKey | String   | key to join on |
-| geoJson      | [Boolean](default=false) | optional, key name holding attribute |
+| geoJson      | [Boolean] (default=false) | optional, key name holding attribute |
 | nestKey      | [String] | optional, key name holding attribute |
 
 #### Joining to geoJson
