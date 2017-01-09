@@ -85,22 +85,22 @@ report: {
 
 Perform a left join on the two array of object json datasets. It performs a deep clone using [lodash.clonedeep](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object.
 
-Optionally, you can pass in a key name under `nestKey` in case the left data's attribute dictionary is nested.
+Optionally, you can pass in a key name under `nestKey` in case the left data's attribute dictionary is nested under another key, such as in geoJson when it's under the `properties` object. More on that below.
 
 | parameter    | type     | description    |
 | :------------|:-------- |:---------------|
 | leftData     | Array    | existing data  |
-| leftDataKey  | [String] | key to join on, defaults to `"id"` if `geoJson: true`  |
+| leftDataKey  | [String] | key to join on, defaults to `"id"` if not set and `geoJson: true` |
 | rightData    | Array    | new data       |
 | rightDataKey | String   | key to join on |
-| geoJson      | [Boolean] (default=false) | optional, key name holding attribute |
+| geoJson      | [Boolean] default=false | optional, key name holding attribute |
 | nestKey      | [String] | optional, key name holding attribute |
 
 #### Joining to geoJson
 
 If `geoJson` is true, performs a left join onto the `properties` object of each feature in a geoJson array.
 
-By default it will join on the `"id"` property so omit the `leftDataKey` key. You can also join on a value in the `properties` object by setting `leftDataKey` to the desired key name and `nestKey` to the string `'properties'`.
+By default it will join on the `"id"` property so omit the `leftDataKey` key if you want that behavior. If you want to join on a value in the `properties` object, set `leftDataKey` to the desired key name and set `nestKey` to the string `'properties'`.
 
 ## Usage
 
