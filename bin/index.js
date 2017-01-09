@@ -84,13 +84,12 @@ q.await(function (err, aData, bData) {
     leftDataKey: aKey,
     rightData: bData,
     rightDataKey: bKey,
-    nestKey: nestKey
+    nestKey: nestKey,
+    geoJson: geojson
   }
 
-  var fn = geojson === true ? 'geoJson' : 'left'
-
   // Join data
-  var jd = joiner[fn](config)
+  var jd = joiner(config)
   if (outPath !== null) {
     io.writeData(outPath, jd.data, {makeDirectories: true}, function (err) {
       if (err) {

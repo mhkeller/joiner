@@ -138,6 +138,11 @@ function joinDataLeft (config) {
   var rightDataKey = config.rightDataKey
   var nestKey = config.nestKey
 
+  if (config.geoJson === true) {
+    geojson = true
+    leftDataKey = config.leftDataKey || 'id'
+  }
+
   resetJoinrReport()
 
   var keyMap = indexRightDataOnKey(rightData, rightDataKey)
@@ -150,13 +155,4 @@ function joinDataLeft (config) {
   return {data: joinedDataWithNull, report: report}
 }
 
-function joinGeoJson (config) {
-  geojson = true
-  config.leftDataKey = config.leftDataKey || 'id'
-  return joinDataLeft(config)
-}
-
-module.exports = {
-  left: joinDataLeft,
-  geoJson: joinGeoJson
-}
+module.exports = joinDataLeft

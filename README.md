@@ -4,7 +4,45 @@ Joiner
 [![Build Status](https://secure.travis-ci.org/mhkeller/joiner.png?branch=master&style=flat-square)](http://travis-ci.org/mhkeller/joiner) [![NPM version](https://badge.fury.io/js/joiner.png?style=flat)](http://badge.fury.io/js/joiner) [![npm](https://img.shields.io/npm/dm/joiner.svg)](https://www.npmjs.com/package/joiner)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
-A simple utility for SQL-like joins with Json or GeoJson data. Also creates join reports so you can know how successful a given join is.
+A simple utility for SQL-like joins with Json or geoJson data. Also creates join reports so you can know how successful a given join is.
+
+```js
+var data = [
+  { "id": "1", "name": "UT" },
+  { "id": "4", "name": "NM" }
+]
+
+var newData = [
+  { "state_name": "NM", "avg_temp": 45 }
+]
+
+var joinedData = joiner({
+  leftData: data,
+  leftDataKey: 'name',
+  rightData: newData,
+  rightDataKey: 'state_name'
+})
+
+console.log(joinedData)
+/*
+{ data:
+  [ { id: '1', name: 'UT', avg_temp: null },
+    { id: '4', name: 'NM', avg_temp: 45 }
+  ],
+  report:
+    { diff:
+      { a: [ 'UT', 'NM' ],
+        b: [ 'NM' ],
+        a_and_b: [ 'NM' ],
+        a_not_in_b: [ 'UT' ],,
+        b_not_in_a: []
+      },
+     prose:
+      { summary: '1 row matched in A and B. 1 row in A not in B. All 1 row in B in A.',
+        full: 'Matches in A and B: NM. A not in B: UT.' } } }
+*/
+
+```
 
 ## Installation
 
@@ -24,7 +62,7 @@ To use as both, run both commands.
 
 ## Methods
 
-All methods return an object with the following structure:
+All joins return an object with the following structure:
 
 ````
 data: [data object],
@@ -43,32 +81,26 @@ report: {
 }
 ````
 
-### .left(config)
+### joiner(config)
 
-Perform a left join on the two array of object json datasets. It performs a [deep clone](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object. Optionally, you can pass in a key name under `nestKey` in case the left data's attribute dictionary is nested.
+Perform a left join on the two array of object json datasets. It performs a deep clone using [lodash.clonedeep](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object.
+
+Optionally, you can pass in a key name under `nestKey` in case the left data's attribute dictionary is nested.
 
 | parameter    | type     | description    |
 | :------------|:-------- |:---------------|
 | leftData     | Array    | existing data  |
-| leftDataKey  | String   | key to join on |
+| leftDataKey  | [String] | key to join on, defaults to `"id"` if `geoJson: true`  |
 | rightData    | Array    | new data       |
 | rightDataKey | String   | key to join on |
+| geoJson      | [Boolean](default=false) | optional, key name holding attribute |
 | nestKey      | [String] | optional, key name holding attribute |
 
+#### Joining to geoJson
 
-### .geoJson(config)
+If `geoJson` is true, performs a left join onto the `properties` object of each feature in a geoJson array.
 
-Performs a left join onto the `properties` object of each feature in a geojson array. It performs a deep clone using [lodash.clonedeep](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object.
-
-By default it will join on the `id` property. You can also join on a value in the `properties` object by setting `leftDataKey` to the desired key name and `nestKey` to the string `'properties'`.
-
-| parameter    | type     | description    |
-| -------------|--------- |----------------|
-| leftData     | Array    | existing data  |
-| leftDataKey  | [String] default='id'| Optional, key to join on |
-| rightData    | Array    | new data       |
-| rightDataKey | String   | key to join on |
-| nestKey      | [String] | optional, key name holding attribute |
+By default it will join on the `"id"` property so omit the `leftDataKey` key. You can also join on a value in the `properties` object by setting `leftDataKey` to the desired key name and `nestKey` to the string `'properties'`.
 
 ## Usage
 

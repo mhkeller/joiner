@@ -23,7 +23,7 @@ var joinedGeoResultId = '{"data":{"type":"FeatureCollection","features":[{"type"
 var joinedGeoResultProp = '{"data":{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-103.00051157559423,36.99999842346288],[-106.40314927871762,36.99999842346288],[-109.04485956299908,36.99999842346288],[-109.04485956299908,40.99944977889005],[-104.05217069691822,40.99944977889005],[-102.05294158231935,40.99892470978733],[-102.03858446120913,36.99999842346288],[-103.00051157559423,36.99999842346288]]]},"properties":{"name":"Colorado","state_abbr":"CO","avg_temp":34},"id":"CO"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-109.04485956299908,36.99999842346288],[-106.40314927871762,36.99999842346288],[-103.00051157559423,36.99999842346288],[-103.0435829389249,35.89420289313209],[-103.06511862059024,32.00186563466003],[-106.66157745870169,32.000290427351864],[-108.21573581888357,31.777661127798083],[-108.21573581888357,31.327151837663315],[-109.04844884327663,31.326626768560594],[-109.04485956299908,36.99999842346288]]]},"properties":{"name":"New Mexico","state_abbr":"NM","avg_temp":45},"id":"NM"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-111.05126723815307,41.9997064195739],[-111.05126723815307,40.99944977889005],[-109.04485956299908,40.99944977889005],[-109.04485956299908,36.99999842346288],[-114.04113770935749,37.003148838079206],[-114.04113770935749,42.00023148867662],[-111.05126723815307,41.9997064195739]]]},"properties":{"name":"Utah","state_abbr":"UT","avg_temp":72},"id":"UT"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-104.05217069691822,40.99944977889005],[-109.04485956299908,40.99944977889005],[-111.05126723815307,40.99944977889005],[-111.05126723815307,41.9997064195739],[-111.05126723815307,44.99995127252268],[-108.82591346606814,44.99995127252268],[-104.05575997719579,44.99995127252268],[-104.05217069691822,40.99944977889005]]]},"properties":{"name":"Wyoming","state_abbr":null,"avg_temp":null},"id":"WY"}]},"report":{"diff":{"a":["Colorado","New Mexico","Utah","Wyoming"],"b":["Colorado","Utah","New Mexico"],"a_and_b":["Colorado","New Mexico","Utah"],"a_not_in_b":["Wyoming"],"b_not_in_a":[]},"prose":{"summary":"3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.","full":"Matches in A and B: Colorado, New Mexico, Utah. A not in B: Wyoming."}}}'
 
 describe('js api', function () {
-  describe('left()', function () {
+  describe('json', function () {
     var config = {
       leftData: leftData,
       leftDataKey: 'name',
@@ -31,19 +31,20 @@ describe('js api', function () {
       rightDataKey: 'state_name'
     }
     it('should match expected json', function () {
-      var joinedData = joiner.left(config)
+      var joinedData = joiner(config)
       assert(_.isEqual(JSON.stringify(joinedData), joinedResult))
     })
   })
 
-  describe('geoJson()', function () {
+  describe('geoJson', function () {
     it('should match expected geojson on id', function () {
       var config = {
         leftData: geoData,
         rightData: newGeoData,
-        rightDataKey: 'state_abbr'
+        rightDataKey: 'state_abbr',
+        geoJson: true
       }
-      var joinedData = joiner.geoJson(config)
+      var joinedData = joiner(config)
       assert(_.isEqual(JSON.stringify(joinedData), joinedGeoResultId))
     })
 
@@ -53,9 +54,10 @@ describe('js api', function () {
         leftDataKey: 'name',
         rightData: newGeoData,
         rightDataKey: 'state_name',
-        nestKey: 'properties'
+        nestKey: 'properties',
+        geoJson: true
       }
-      var joinedData = joiner.geoJson(config)
+      var joinedData = joiner(config)
       assert(_.isEqual(JSON.stringify(joinedData), joinedGeoResultProp))
     })
   })

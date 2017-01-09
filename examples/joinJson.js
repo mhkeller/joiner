@@ -37,7 +37,7 @@ var newData = JSON.parse(fs.readFileSync('examples/data/new-data.json'))
 ]
 */
 
-var joinedData = joiner.left({
+var joinedData = joiner({
   leftData: data,
   leftDataKey: 'name',
   rightData: newData,
