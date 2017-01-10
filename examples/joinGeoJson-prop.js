@@ -25,13 +25,14 @@ var newData = JSON.parse(fs.readFileSync('examples/data/new-geo-data.json'))
 
 var joinedData = joiner({
   leftData: geoData,
-  leftDataKey: 'name',
+  leftDataKey: 'properties.name',
   rightData: newData,
   rightDataKey: 'state_name',
-  path: 'properties'
+  nestKey: 'properties',
+  geoJson: true
 })
 
-console.log(joinedData)
+console.log(JSON.stringify(joinedData))
 
 /*
 {

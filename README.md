@@ -94,13 +94,13 @@ Optionally, you can pass in a key name under `nestKey` in case the left data's a
 | rightData    | Array    | new data       |
 | rightDataKey | String   | key to join on |
 | geoJson      | [Boolean] default=false | optional, key name holding attribute |
-| nestKey      | [String] | optional, key name holding attribute |
+| nestKey      | [String] | optional, key name holding attribute, feaults to `"properties"` if not set and `geoJson: true` |
 
 #### Joining to geoJson
 
 If `geoJson` is true, performs a left join onto the `properties` object of each feature in a geoJson array.
 
-By default it will join on the `"id"` property so omit the `leftDataKey` key if you want that behavior. If you want to join on a value in the `properties` object, set `leftDataKey` to the desired key name and set `nestKey` to the string `'properties'`.
+If you want to join on the `"id"` property, omit `leftDataKey`. If you want to join on a value in the `properties` object, set `leftDataKey` to `'properties.<desired-key-name>'` and set `nestKey` to `'properties'`. See examples for more.
 
 ## Usage
 
@@ -130,6 +130,6 @@ If you specify an output file, it will write the join result to the specified fi
 
 If you don't specify an output file with `-o`, Joiner will print the join report to the console. By default, it will just specify the summary report. To print the full report, specify `-d full`.
 
-Setting `-g` or `--geojson` is the equivalent of `.geoJson` above.
+Setting `-g` or `--geojson` is the equivalent of setting `geojson: true` above.
 
 It converts the specified input file into json and writes the joined dataset to file using [indian ocean](https://github.com/mhkeller/indian-ocean), which currently supports the following formats: `json`, `geojson`, `csv`, `psv`, `tsv` and `dbf`. The format is inferred from the file extension of the input and output file paths. For example, `-a path/to/input/file.csv` will read in a csv and `-o path/to/output/file.csv` will write a csv.

@@ -26,10 +26,11 @@ var newData = JSON.parse(fs.readFileSync('examples/data/new-geo-data.json'))
 var joinedData = joiner({
   leftData: geoData,
   rightData: newData,
-  rightDataKey: 'state_abbr'
+  rightDataKey: 'state_abbr',
+  geoJson: true
 })
 
-console.log(joinedData)
+console.log(JSON.stringify(joinedData))
 
 /*
 {
@@ -78,7 +79,6 @@ console.log(joinedData)
           ]
         },
         "properties": {
-          "name": "Colorado",
           "state_name": "Colorado",
           "avg_temp": 34
         },
@@ -134,7 +134,6 @@ console.log(joinedData)
           ]
         },
         "properties": {
-          "name": "New Mexico",
           "state_name": "New Mexico",
           "avg_temp": 45
         },
@@ -178,7 +177,6 @@ console.log(joinedData)
           ]
         },
         "properties": {
-          "name": "Utah",
           "state_name": "Utah",
           "avg_temp": 72
         },

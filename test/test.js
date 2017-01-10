@@ -54,7 +54,6 @@ describe('js api', function () {
         leftDataKey: 'name',
         rightData: newGeoData,
         rightDataKey: 'state_name',
-        nestKey: 'properties',
         geoJson: true
       }
       var joinedData = joiner(config)
@@ -64,7 +63,7 @@ describe('js api', function () {
 })
 
 describe('cli', function () {
-  describe('left()', function () {
+  describe('json', function () {
     var config = {
       leftDataKey: 'name',
       rightDataKey: 'state_name'
@@ -87,7 +86,7 @@ describe('cli', function () {
     })
   })
 
-  describe('geoJson()', function () {
+  describe('geoJson', function () {
     it('should match expected geojson on id', function (done) {
       var config = {
         rightDataKey: 'state_abbr'
@@ -111,10 +110,9 @@ describe('cli', function () {
     it('should match expected geojson on property', function (done) {
       var config = {
         leftDataKey: 'name',
-        rightDataKey: 'state_name',
-        nestKey: 'properties'
+        rightDataKey: 'state_name'
       }
-      var cmd = './bin/index.js -g -a ' + geoDataPath + ' -k ' + config.leftDataKey + ' -b ' + newGeoDataPath + ' -j ' + config.rightDataKey + ' -n ' + config.nestKey
+      var cmd = './bin/index.js -g -a ' + geoDataPath + ' -k ' + config.leftDataKey + ' -b ' + newGeoDataPath + ' -j ' + config.rightDataKey
       var outFile = 'test/tmp-test-geojson-prop.json'
       exec(cmd + ' -o ' + outFile, function (err, stdout, stderr) {
         assert(_.isEqual(err, null))

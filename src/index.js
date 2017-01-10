@@ -1,7 +1,10 @@
 var _ = require('underscore')
 var cloneDeep = require('lodash.clonedeep')
+var get = require('lodash.get')
+var set = require('lodash.set')
+var unset = require('lodash.unset')
 
-var geojson
+var geoJson
 var reportData = {
   a_keys: [],
   b_keys: []
@@ -14,17 +17,23 @@ function resetJoinrReport () {
   }
 }
 
-function addNulls (data, nullKeyObj, path) {
+function addNulls (data, nullKeyObj, nestKey) {
   data.forEach(function (datum) {
-    if (!path && geojson) path = 'properties'
-    if (path) datum = datum[path]
-    // Create copies of our objects so they don't get overwritten
-    var nullKeyObjPersist = _.extend({}, nullKeyObj)
-    var datumPersist = _.extend({}, datum)
+    var nestedDestination
+    if (nestKey) {
+      // Set the nested destination to an object if it isn't already or doesn't exist
+      nestedDestination = get(datum, nestKey)
+      if (!_.isObject(nestedDestination) || _.isArray(nestedDestination) || _.isFunction(nestedDestination)) {
+        set(datum, nestKey, {})
+      }
+      datum = get(datum, nestKey)
+    }
+    // Create copies of this so they don't get overwritten or messed up by the extend
+    var datumPersist = cloneDeep(datum)
     // You could extend `nullKeyObjPersist` with `datum` but that would reverse the order of your keys
     // And always put your keys that have nulls (which are probably the least important keys) first.
     // This way will overwrite everything with nulls, then rewrite keys that have values.
-    _.extend(datum, nullKeyObjPersist, datumPersist)
+    _.extend(datum, nullKeyObj, datumPersist)
   })
   return data
 }
@@ -45,37 +54,34 @@ function indexRightDataOnKey (rightData, rightKeyColumn) {
     // Copy this value because we're going to be deleting the match column
     // And we don't want that column to be deleted the next time we join, if we want to join without reloading data
     // This will delete the copy, but keep the original data next time the function is run
-    var datumPersist = _.extend({}, datum)
-    var rightKeyValue = datumPersist[rightKeyColumn]
+    var datumPersist = cloneDeep(datum)
+    var rightKeyValue = get(datumPersist, rightKeyColumn)
     reportData.b_keys.push(rightKeyValue)
     if (!keyMap[rightKeyValue]) {
       // Get rid of the original name key since that will just be a duplicate
-      delete datumPersist[rightKeyColumn]
-      keyMap[rightKeyValue] = datumPersist
+      unset(datumPersist, rightKeyColumn)
+      set(keyMap, rightKeyValue, datumPersist)
       // Log the new keys that we've encountered for a comprehensive list at the end
       addToNullMatch(keyMap, Object.keys(datumPersist))
     } else {
-      console.error('Duplicate entry for "' + rightKeyValue + '"')
+      console.error('[Joiner] Duplicate entry for "' + rightKeyValue + '"')
     }
   })
   return keyMap
 }
 
 function joinOnMatch (leftData, leftKeyColumn, keyMap, nestKey) {
-  if (geojson) {
+  if (geoJson) {
     leftData = leftData.features
   }
 
   leftData.forEach(function (datum) {
-    if (nestKey) {
-      datum = datum[nestKey]
-    }
-    var leftKeyValue = datum[leftKeyColumn]
+    var leftKeyValue = get(datum, leftKeyColumn)
     var match = keyMap[leftKeyValue]
     reportData.a_keys.push(leftKeyValue)
     if (match) {
-      if (!nestKey && geojson) {
-        _.extend(datum.properties || {}, match)
+      if (typeof nestKey === 'string' && nestKey !== '') {
+        set(datum, nestKey, _.extend(get(datum, nestKey), match))
       } else {
         _.extend(datum, match)
       }
@@ -123,7 +129,6 @@ function createJoinReport () {
     report.prose.summary = report.prose.summary.trim()
     report.prose.full = report.prose.full.trim()
   }
-
   return report
 }
 
@@ -139,8 +144,9 @@ function joinDataLeft (config) {
   var nestKey = config.nestKey
 
   if (config.geoJson === true) {
-    geojson = true
+    geoJson = true
     leftDataKey = config.leftDataKey || 'id'
+    nestKey = config.nestKey || 'properties'
   }
 
   resetJoinrReport()
@@ -150,8 +156,8 @@ function joinDataLeft (config) {
   var joinedDataWithNull = addNulls(joinedData, keyMap.null_match, nestKey)
 
   var report = createJoinReport()
-  // If it's geojson, nest the collection back under a `FeatureCollection`
-  if (geojson) joinedDataWithNull = { type: 'FeatureCollection', features: joinedDataWithNull }
+  // If it's geoJson, nest the collection back under a `FeatureCollection`
+  if (geoJson) joinedDataWithNull = { type: 'FeatureCollection', features: joinedDataWithNull }
   return {data: joinedDataWithNull, report: report}
 }
 

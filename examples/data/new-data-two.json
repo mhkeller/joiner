@@ -1,0 +1,14 @@
+[
+  {
+    "state_name": "Colorado",
+    "avg_temp": 34
+  },
+  {
+    "state_name": "Utah",
+    "avg_temp": 72
+  },
+  {
+    "state_name": "New Mexico",
+    "avg_temp": 45
+  }
+]

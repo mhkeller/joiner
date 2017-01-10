@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "name": "Utah",
+    "values": {
+      "weather": {}
+    }
+  }, {
+    "id": "2",
+    "name": "Wyoming",
+    "values": {
+      "weather": {}
+    }
+  }, {
+    "id": "3",
+    "name": "Colorado",
+    "values": {
+      "weather": {}
+    }
+  }, {
+    "id": "4",
+    "name": "New Mexico",
+    "values": {
+      "weather": {}
+    }
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "name": "UT",
+    "values": {
+      "name": "Utah"
+    }
+  }, {
+    "id": "2",
+    "name": "WY",
+    "values": {
+      "name": "Wyoming"
+    }
+  }, {
+    "id": "3",
+    "name": "CO",
+    "values": {
+      "name": "Colorado"
+    }
+  }, {
+    "id": "4",
+    "name": "NM",
+    "values": {
+      "name": "New Mexico"
+    }
+  }
+]
