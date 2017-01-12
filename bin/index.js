@@ -108,7 +108,7 @@ q.await(function (err, aData, bData) {
 })
 
 function getDbfOrDataLoader (path) {
-  return io.discernParser(path) === 'dbf' ? io.readDbf : io.readData
+  return io.discernFormat(path) === 'dbf' ? io.readDbf : io.readData
 }
 
 function stripExtension (fullPath) {
