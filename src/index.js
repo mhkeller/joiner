@@ -81,7 +81,7 @@ function joinOnMatch (leftData, leftKeyColumn, keyMap, nestKey) {
     reportData.a_keys.push(leftKeyValue)
     if (match) {
       if (typeof nestKey === 'string' && nestKey !== '') {
-        set(datum, nestKey, _.extend(get(datum, nestKey), match))
+        set(datum, nestKey, _.extend(get(datum, nestKey) || {}, match))
       } else {
         _.extend(datum, match)
       }
@@ -137,6 +137,13 @@ function printRows (length) {
 }
 
 function joinDataLeft (config) {
+  var requiredKeys = ['leftData', 'rightData', 'rightDataKey']
+  requiredKeys.forEach(function (k) {
+    if (!config[k]) {
+      throw new Error('[joiner] `' + k + '` is required')
+    }
+  })
+
   var leftData = cloneDeep(config.leftData)
   var leftDataKey = config.leftDataKey
   var rightData = cloneDeep(config.rightData)

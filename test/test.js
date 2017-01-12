@@ -1,4 +1,5 @@
 /* global describe, it */
+
 var joiner = require('../src/index.js')
 var io = require('indian-ocean')
 var chai = require('chai')
@@ -7,37 +8,97 @@ var _ = require('underscore')
 var rimraf = require('rimraf')
 var exec = require('child_process').exec
 
+// --------------------------------------------
+// Our dataset paths
+//
 var leftDataPath = 'examples/data/left-data.json'
+var leftDataNestedPath = 'examples/data/left-data-nested.json'
+var leftDataNestedTwoPath = 'examples/data/left-data-nested-two.json'
+var leftDataNestedThreePath = 'examples/data/left-data-nested-three.json'
+var leftDataNestedFourPath = 'examples/data/left-data-nested-four.json'
 var newDataPath = 'examples/data/new-data.json'
+var newDataTwoPath = 'examples/data/new-data-two.json'
+var newDataThreePath = 'examples/data/new-data-three.json'
 var geoDataPath = 'examples/data/us-states.geojson'
 var newGeoDataPath = 'examples/data/new-geo-data.json'
 
+// --------------------------------------------
+// Our loaded data
+//
 var leftData = io.readDataSync(leftDataPath)
+var leftDataNested = io.readDataSync(leftDataNestedPath)
+var leftDataNestedTwo = io.readDataSync(leftDataNestedTwoPath)
+var leftDataNestedThree = io.readDataSync(leftDataNestedThreePath)
+var leftDataNestedFour = io.readDataSync(leftDataNestedFourPath)
 var newData = io.readDataSync(newDataPath)
-
+var newDataTwo = io.readDataSync(newDataTwoPath)
+var newDataThree = io.readDataSync(newDataThreePath)
 var geoData = io.readDataSync(geoDataPath)
 var newGeoData = io.readDataSync(newGeoDataPath)
 
+// --------------------------------------------
+// What it should look like
+//
 var joinedResult = '{"data":[{"id":"1","name":"UT","avg_temp":72},{"id":"2","name":"WY","avg_temp":null},{"id":"3","name":"CO","avg_temp":34},{"id":"4","name":"NM","avg_temp":45}],"report":{"diff":{"a":["UT","WY","CO","NM"],"b":["CO","UT","NM"],"a_and_b":["UT","CO","NM"],"a_not_in_b":["WY"],"b_not_in_a":[]},"prose":{"summary":"3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.","full":"Matches in A and B: UT, CO, NM. A not in B: WY."}}}'
+var joinedResultNested = '{"data":[{"id":"1","name":"Utah","values":{"weather":{"avg_temp":72}}},{"id":"2","name":"Wyoming","values":{"weather":{"avg_temp":null}}},{"id":"3","name":"Colorado","values":{"weather":{"avg_temp":34}}},{"id":"4","name":"New Mexico","values":{"weather":{"avg_temp":45}}}],"report":{"diff":{"a":["Utah","Wyoming","Colorado","New Mexico"],"b":["Colorado","Utah","New Mexico"],"a_and_b":["Utah","Colorado","New Mexico"],"a_not_in_b":["Wyoming"],"b_not_in_a":[]},"prose":{"summary":"3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.","full":"Matches in A and B: Utah, Colorado, New Mexico. A not in B: Wyoming."}}}'
+var joinedResultNestedKeys = '{"data":[{"id":"1","name":"UT","values":{"name":"Utah"},"type":"state","data":{"avg_temp":72}},{"id":"2","name":"WY","values":{"name":"Wyoming"},"type":null,"data":null},{"id":"3","name":"CO","values":{"name":"Colorado"},"type":"state","data":{"avg_temp":34}},{"id":"4","name":"NM","values":{"name":"New Mexico"},"type":"state","data":{"avg_temp":45}}],"report":{"diff":{"a":["Utah","Wyoming","Colorado","New Mexico"],"b":["Colorado","Utah","New Mexico"],"a_and_b":["Utah","Colorado","New Mexico"],"a_not_in_b":["Wyoming"],"b_not_in_a":[]},"prose":{"summary":"3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.","full":"Matches in A and B: Utah, Colorado, New Mexico. A not in B: Wyoming."}}}'
 var joinedGeoResultId = '{"data":{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-103.00051157559423,36.99999842346288],[-106.40314927871762,36.99999842346288],[-109.04485956299908,36.99999842346288],[-109.04485956299908,40.99944977889005],[-104.05217069691822,40.99944977889005],[-102.05294158231935,40.99892470978733],[-102.03858446120913,36.99999842346288],[-103.00051157559423,36.99999842346288]]]},"properties":{"name":"Colorado","state_name":"Colorado","avg_temp":34},"id":"CO"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-109.04485956299908,36.99999842346288],[-106.40314927871762,36.99999842346288],[-103.00051157559423,36.99999842346288],[-103.0435829389249,35.89420289313209],[-103.06511862059024,32.00186563466003],[-106.66157745870169,32.000290427351864],[-108.21573581888357,31.777661127798083],[-108.21573581888357,31.327151837663315],[-109.04844884327663,31.326626768560594],[-109.04485956299908,36.99999842346288]]]},"properties":{"name":"New Mexico","state_name":"New Mexico","avg_temp":45},"id":"NM"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-111.05126723815307,41.9997064195739],[-111.05126723815307,40.99944977889005],[-109.04485956299908,40.99944977889005],[-109.04485956299908,36.99999842346288],[-114.04113770935749,37.003148838079206],[-114.04113770935749,42.00023148867662],[-111.05126723815307,41.9997064195739]]]},"properties":{"name":"Utah","state_name":"Utah","avg_temp":72},"id":"UT"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-104.05217069691822,40.99944977889005],[-109.04485956299908,40.99944977889005],[-111.05126723815307,40.99944977889005],[-111.05126723815307,41.9997064195739],[-111.05126723815307,44.99995127252268],[-108.82591346606814,44.99995127252268],[-104.05575997719579,44.99995127252268],[-104.05217069691822,40.99944977889005]]]},"properties":{"name":"Wyoming","state_name":null,"avg_temp":null},"id":"WY"}]},"report":{"diff":{"a":["CO","NM","UT","WY"],"b":["CO","UT","NM"],"a_and_b":["CO","NM","UT"],"a_not_in_b":["WY"],"b_not_in_a":[]},"prose":{"summary":"3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.","full":"Matches in A and B: CO, NM, UT. A not in B: WY."}}}'
 var joinedGeoResultProp = '{"data":{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-103.00051157559423,36.99999842346288],[-106.40314927871762,36.99999842346288],[-109.04485956299908,36.99999842346288],[-109.04485956299908,40.99944977889005],[-104.05217069691822,40.99944977889005],[-102.05294158231935,40.99892470978733],[-102.03858446120913,36.99999842346288],[-103.00051157559423,36.99999842346288]]]},"properties":{"name":"Colorado","state_abbr":"CO","avg_temp":34},"id":"CO"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-109.04485956299908,36.99999842346288],[-106.40314927871762,36.99999842346288],[-103.00051157559423,36.99999842346288],[-103.0435829389249,35.89420289313209],[-103.06511862059024,32.00186563466003],[-106.66157745870169,32.000290427351864],[-108.21573581888357,31.777661127798083],[-108.21573581888357,31.327151837663315],[-109.04844884327663,31.326626768560594],[-109.04485956299908,36.99999842346288]]]},"properties":{"name":"New Mexico","state_abbr":"NM","avg_temp":45},"id":"NM"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-111.05126723815307,41.9997064195739],[-111.05126723815307,40.99944977889005],[-109.04485956299908,40.99944977889005],[-109.04485956299908,36.99999842346288],[-114.04113770935749,37.003148838079206],[-114.04113770935749,42.00023148867662],[-111.05126723815307,41.9997064195739]]]},"properties":{"name":"Utah","state_abbr":"UT","avg_temp":72},"id":"UT"},{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-104.05217069691822,40.99944977889005],[-109.04485956299908,40.99944977889005],[-111.05126723815307,40.99944977889005],[-111.05126723815307,41.9997064195739],[-111.05126723815307,44.99995127252268],[-108.82591346606814,44.99995127252268],[-104.05575997719579,44.99995127252268],[-104.05217069691822,40.99944977889005]]]},"properties":{"name":"Wyoming","state_abbr":null,"avg_temp":null},"id":"WY"}]},"report":{"diff":{"a":["Colorado","New Mexico","Utah","Wyoming"],"b":["Colorado","Utah","New Mexico"],"a_and_b":["Colorado","New Mexico","Utah"],"a_not_in_b":["Wyoming"],"b_not_in_a":[]},"prose":{"summary":"3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.","full":"Matches in A and B: Colorado, New Mexico, Utah. A not in B: Wyoming."}}}'
 
+// --------------------------------------------
+// Testing 1, 2, 3
+//
 describe('js api', function () {
   describe('json', function () {
-    var config = {
-      leftData: leftData,
-      leftDataKey: 'name',
-      rightData: newData,
-      rightDataKey: 'state_name'
-    }
     it('should match expected json', function () {
+      var config = {
+        leftData: leftData,
+        leftDataKey: 'name',
+        rightData: newData,
+        rightDataKey: 'state_name'
+      }
       var joinedData = joiner(config)
       assert(_.isEqual(JSON.stringify(joinedData), joinedResult))
+    })
+
+    it('should match expected json, nesting under key', function () {
+      var config = {
+        leftData: leftDataNestedTwo,
+        leftDataKey: 'name',
+        rightData: newDataTwo,
+        rightDataKey: 'state_name',
+        nestKey: 'values.weather'
+      }
+      var joinedData = joiner(config)
+      assert(_.isEqual(JSON.stringify(joinedData), joinedResultNested))
+    })
+
+    it('should match expected json, nesting under key that doesn\'t exist', function () {
+      var config = {
+        leftData: leftDataNestedThree,
+        leftDataKey: 'name',
+        rightData: newDataTwo,
+        rightDataKey: 'state_name',
+        nestKey: 'values.weather'
+      }
+      var joinedData = joiner(config)
+      assert(_.isEqual(JSON.stringify(joinedData), joinedResultNested))
+    })
+
+    it('should match expected json, with nested join keys', function () {
+      var config = {
+        leftData: leftDataNestedFour,
+        leftDataKey: 'values.name',
+        rightData: newDataThree,
+        rightDataKey: 'data.state_name'
+      }
+      var joinedData = joiner(config)
+      assert(_.isEqual(JSON.stringify(joinedData), joinedResultNestedKeys))
     })
   })
 
   describe('geoJson', function () {
-    it('should match expected geojson on id', function () {
+    it('should match expected geojson, on id', function () {
       var config = {
         leftData: geoData,
         rightData: newGeoData,
@@ -48,7 +109,7 @@ describe('js api', function () {
       assert(_.isEqual(JSON.stringify(joinedData), joinedGeoResultId))
     })
 
-    it('should match expected geojson on property', function () {
+    it('should match expected geojson, on property', function () {
       var config = {
         leftData: geoData,
         leftDataKey: 'properties.name',
@@ -64,18 +125,83 @@ describe('js api', function () {
 
 describe('cli', function () {
   describe('json', function () {
-    var config = {
-      leftDataKey: 'name',
-      rightDataKey: 'state_name'
-    }
-    var cmd = './bin/index.js -a ' + leftDataPath + ' -k ' + config.leftDataKey + ' -b ' + newDataPath + ' -j ' + config.rightDataKey
     it('should match expected json', function (done) {
+      var config = {
+        leftDataKey: 'name',
+        rightDataKey: 'state_name'
+      }
+      var cmd = './bin/index.js -a ' + leftDataPath + ' -k ' + config.leftDataKey + ' -b ' + newDataPath + ' -j ' + config.rightDataKey
       var outFile = 'test/tmp-test-left.json'
       exec(cmd + ' -o ' + outFile, function (err, stdout, stderr) {
         assert(_.isEqual(err, null))
         var data = io.readDataSync(outFile)
         var report = io.readDataSync(outFile.replace('.json', '.report.json'))
         var parsedResult = JSON.parse(joinedResult)
+        assert(_.isEqual(parsedResult.data, data))
+        assert(_.isEqual(parsedResult.report, report))
+        rimraf(outFile.replace('.json', '*'), function (err) {
+          assert.equal(err, null)
+          done()
+        })
+      })
+    })
+
+    it('should match expected json, nesting under key', function (done) {
+      var config = {
+        leftDataKey: 'name',
+        rightDataKey: 'state_name',
+        nestKey: 'values.weather'
+      }
+      var cmd = './bin/index.js -a ' + leftDataNestedTwoPath + ' -k ' + config.leftDataKey + ' -b ' + newDataTwoPath + ' -j ' + config.rightDataKey + ' -n ' + config.nestKey
+      var outFile = 'test/tmp-test-left-nested-under-missing.json'
+      exec(cmd + ' -o ' + outFile, function (err, stdout, stderr) {
+        assert(_.isEqual(err, null))
+        var data = io.readDataSync(outFile)
+        var report = io.readDataSync(outFile.replace('.json', '.report.json'))
+        var parsedResult = JSON.parse(joinedResultNested)
+        assert(_.isEqual(parsedResult.data, data))
+        assert(_.isEqual(parsedResult.report, report))
+        rimraf(outFile.replace('.json', '*'), function (err) {
+          assert.equal(err, null)
+          done()
+        })
+      })
+    })
+
+    it('should match expected json, with nested join keys', function (done) {
+      var config = {
+        leftDataKey: 'values.name',
+        rightDataKey: 'data.state_name'
+      }
+      var cmd = './bin/index.js -a ' + leftDataNestedFourPath + ' -k ' + config.leftDataKey + ' -b ' + newDataThreePath + ' -j ' + config.rightDataKey
+      var outFile = 'test/tmp-test-left-nested-keys.json'
+      exec(cmd + ' -o ' + outFile, function (err, stdout, stderr) {
+        assert(_.isEqual(err, null))
+        var data = io.readDataSync(outFile)
+        var report = io.readDataSync(outFile.replace('.json', '.report.json'))
+        var parsedResult = JSON.parse(joinedResultNestedKeys)
+        assert(_.isEqual(parsedResult.data, data))
+        assert(_.isEqual(parsedResult.report, report))
+        rimraf(outFile.replace('.json', '*'), function (err) {
+          assert.equal(err, null)
+          done()
+        })
+      })
+    })
+
+    it('should match expected json, nesting under key that doesn\'t exist', function (done) {
+      var config = {
+        leftDataKey: 'name',
+        rightDataKey: 'state_name',
+        nestKey: 'values.weather'
+      }
+      var cmd = './bin/index.js -a ' + leftDataNestedThreePath + ' -k ' + config.leftDataKey + ' -b ' + newDataTwoPath + ' -j ' + config.rightDataKey + ' -n ' + config.nestKey
+      var outFile = 'test/tmp-test-left-nested-under.json'
+      exec(cmd + ' -o ' + outFile, function (err, stdout, stderr) {
+        assert(_.isEqual(err, null))
+        var data = io.readDataSync(outFile)
+        var report = io.readDataSync(outFile.replace('.json', '.report.json'))
+        var parsedResult = JSON.parse(joinedResultNested)
         assert(_.isEqual(parsedResult.data, data))
         assert(_.isEqual(parsedResult.report, report))
         rimraf(outFile.replace('.json', '*'), function (err) {

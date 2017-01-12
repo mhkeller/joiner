@@ -6,7 +6,7 @@
 var fs = require('fs')
 var joiner = require('../src/index.js')
 
-var data = JSON.parse(fs.readFileSync('examples/data/left-data-nested-two.json'))
+var data = JSON.parse(fs.readFileSync('examples/data/left-data-nested-three.json'))
 /*
 [
   {
