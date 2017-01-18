@@ -4,18 +4,7 @@ var get = require('lodash.get')
 var set = require('lodash.set')
 var unset = require('lodash.unset')
 
-var geoJson
-var reportData = {
-  a_keys: [],
-  b_keys: []
-}
-
-function resetJoinrReport () {
-  reportData = {
-    a_keys: [],
-    b_keys: []
-  }
-}
+var joinReport = require('./report.js')
 
 function addNulls (data, nullKeyObj, nestKey) {
   data.forEach(function (datum) {
@@ -46,7 +35,7 @@ function addToNullMatch (keyMap, keys) {
   })
 }
 
-function indexRightDataOnKey (rightData, rightKeyColumn) {
+function indexRightDataOnKey (rightData, rightKeyColumn, reportData) {
   var keyMap = {
     null_match: {}
   }
@@ -56,7 +45,7 @@ function indexRightDataOnKey (rightData, rightKeyColumn) {
     // This will delete the copy, but keep the original data next time the function is run
     var datumPersist = cloneDeep(datum)
     var rightKeyValue = get(datumPersist, rightKeyColumn)
-    reportData.b_keys.push(rightKeyValue)
+    reportData.bKeys.push(rightKeyValue)
     if (!keyMap[rightKeyValue]) {
       // Get rid of the original name key since that will just be a duplicate
       unset(datumPersist, rightKeyColumn)
@@ -70,7 +59,7 @@ function indexRightDataOnKey (rightData, rightKeyColumn) {
   return keyMap
 }
 
-function joinOnMatch (leftData, leftKeyColumn, keyMap, nestKey) {
+function joinOnMatch (leftData, leftKeyColumn, keyMap, nestKey, geoJson, reportData) {
   if (geoJson) {
     leftData = leftData.features
   }
@@ -78,7 +67,7 @@ function joinOnMatch (leftData, leftKeyColumn, keyMap, nestKey) {
   leftData.forEach(function (datum) {
     var leftKeyValue = get(datum, leftKeyColumn)
     var match = keyMap[leftKeyValue]
-    reportData.a_keys.push(leftKeyValue)
+    reportData.aKeys.push(leftKeyValue)
     if (match) {
       if (typeof nestKey === 'string' && nestKey !== '') {
         set(datum, nestKey, _.extend(get(datum, nestKey) || {}, match))
@@ -88,52 +77,6 @@ function joinOnMatch (leftData, leftKeyColumn, keyMap, nestKey) {
     }
   })
   return leftData
-}
-
-function createJoinReport () {
-  var a = reportData.a_keys
-  var b = reportData.b_keys
-
-  var report = { diff: {}, prose: {} }
-  report.diff.a = a
-  report.diff.b = b
-  report.diff.a_and_b = _.intersection(a, b)
-  report.diff.a_not_in_b = _.difference(a, b)
-  report.diff.b_not_in_a = _.difference(b, a)
-
-  report.prose.summary = 'No matches. Try choosing different columns to match on.'
-
-  // If it matched some things...
-  if (report.diff.a_and_b.length !== 0) {
-    // But it wasn't a perfect match...
-    if (report.diff.a_not_in_b.length !== 0 || report.diff.b_not_in_a.length !== 0) {
-      report.prose.summary = printRows(report.diff.a_and_b.length) + ' matched in A and B. '
-      report.prose.full = 'Matches in A and B: ' + report.diff.a_and_b.join(', ') + '. '
-
-      if (report.diff.a_not_in_b.length === 0) {
-        report.prose.summary += 'All ' + printRows(report.diff.a.length) + ' in A find a match. '
-      } else {
-        report.prose.summary += printRows(report.diff.a_not_in_b.length) + ' in A not in B. '
-        report.prose.full += 'A not in B: ' + report.diff.a_not_in_b.join(', ') + '. '
-      }
-
-      if (report.diff.b_not_in_a.length === 0) {
-        report.prose.summary += 'All ' + printRows(report.diff.b.length) + ' in B in A. '
-      } else {
-        report.prose.summary += printRows(report.diff.b_not_in_a.length) + ' in B not in A. '
-        report.prose.full += 'B not in A: ' + report.diff.b_not_in_a.join(', ') + '. '
-      }
-    } else {
-      report.prose.summary = '100%, one-to-one match of ' + report.diff.a.length + ' rows!'
-    }
-    report.prose.summary = report.prose.summary.trim()
-    report.prose.full = report.prose.full.trim()
-  }
-  return report
-}
-
-function printRows (length) {
-  return length + ' row' + (length > 1 ? 's' : '')
 }
 
 function joinDataLeft (config) {
@@ -149,22 +92,27 @@ function joinDataLeft (config) {
   var rightData = cloneDeep(config.rightData)
   var rightDataKey = config.rightDataKey
   var nestKey = config.nestKey
+  var geoJson = config.geoJson
 
-  if (config.geoJson === true) {
-    geoJson = true
+  if (geoJson === true) {
     leftDataKey = config.leftDataKey || 'id'
     nestKey = config.nestKey || 'properties'
   }
 
-  resetJoinrReport()
+  var reportData = joinReport.init()
 
-  var keyMap = indexRightDataOnKey(rightData, rightDataKey)
-  var joinedData = joinOnMatch(leftData, leftDataKey, keyMap, nestKey)
+  var keyMap = indexRightDataOnKey(rightData, rightDataKey, reportData)
+  var joinedData = joinOnMatch(leftData, leftDataKey, keyMap, nestKey, geoJson, reportData)
   var joinedDataWithNull = addNulls(joinedData, keyMap.null_match, nestKey)
 
-  var report = createJoinReport()
+  var report = joinReport.create(reportData)
   // If it's geoJson, nest the collection back under a `FeatureCollection`
-  if (geoJson) joinedDataWithNull = { type: 'FeatureCollection', features: joinedDataWithNull }
+  if (geoJson) {
+    joinedDataWithNull = {
+      type: 'FeatureCollection',
+      features: joinedDataWithNull
+    }
+  }
   return {data: joinedDataWithNull, report: report}
 }
 
