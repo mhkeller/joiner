@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-// var io = require('indian-ocean')
 var optimist = require('optimist')
 var joiner = require('../src/joiner/index.js')
 var queue = require('d3-queue').queue
