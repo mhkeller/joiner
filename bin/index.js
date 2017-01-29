@@ -101,7 +101,6 @@ q.await(function (err, aData, bData) {
     })
     io.writeDataSync(stripExtension(outPath) + 'report.json', jd.report, {makeDirectories: true})
   } else {
-    console.log(jd.data)
     if (reportDesc === 'summary') {
       console.log(jd.report.prose.summary)
     } else {
