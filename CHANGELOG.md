@@ -5,7 +5,7 @@ Changelog
 
 > Not yet on npm
 
-Another rework of the API focused on clarity between json, geojson and nested variables. Much better and clearer support for targeting nested keys and adding results to a nested key through lodash's `get` and `set`. Started maintaining changelog.
+Another rework of the API focused on clarity between json, geojson and nested variables. Much better and clearer support for targeting nested keys and adding results to a nested key through lodash's `get` and `set`. Started maintaining changelog. Remove indian-ocean dependency and include browser-safe portions.
 
 * Add many more test cases and some bug fixes to dbf reading and writing
   * [0fac3167d9e226925ccadb86a7735b33bda9afb2](https://github.com/mhkeller/joiner/commit/0fac3167d9e226925ccadb86a7735b33bda9afb2)
