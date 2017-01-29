@@ -2,7 +2,7 @@
 
 // var io = require('indian-ocean')
 var optimist = require('optimist')
-var joiner = require('../src/index.js')
+var joiner = require('../src/joiner/index.js')
 var queue = require('d3-queue').queue
 
 var io = require('../src/io/index.js')

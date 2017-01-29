@@ -1,6 +1,6 @@
 /* global describe, it */
 
-var joiner = require('../src/index.js')
+var joiner = require('../src/joiner/index.js')
 var io = require('indian-ocean')
 var chai = require('chai')
 var assert = chai.assert

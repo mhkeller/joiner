@@ -13,6 +13,10 @@ Another rework of the API focused on clarity between json, geojson and nested va
   * [0cce72ef36b142ab654ef469c69853e7c6de8080](https://github.com/mhkeller/joiner/commit/0cce72ef36b142ab654ef469c69853e7c6de8080)
   * [629f7b4e8ece8c05f2be967565e936626163607d](https://github.com/mhkeller/joiner/commit/629f7b4e8ece8c05f2be967565e936626163607d)
   * [e278ba88e033d9b9682f36a19d62082198a3b206](https://github.com/mhkeller/joiner/commit/e278ba88e033d9b9682f36a19d62082198a3b206)
+* Remove dependency on indian-ocean for easier browser-compatibility and lighter-weight.
+  * [d246c7cacbf74caf58b8b28bcbbe66734d65df27](https://github.com/mhkeller/joiner/commit/d246c7cacbf74caf58b8b28bcbbe66734d65df27)
+  * [d246c7cacbf74caf58b8b28bcbbe66734d65df27](https://github.com/mhkeller/joiner/commit/d246c7cacbf74caf58b8b28bcbbe66734d65df27)
+  * [104a89ee72e3024743845594b36356c44f91cf7b](https://github.com/mhkeller/joiner/commit/104a89ee72e3024743845594b36356c44f91cf7b)
 
 # 1.0.1
 
