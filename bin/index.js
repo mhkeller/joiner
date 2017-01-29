@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
-var io = require('indian-ocean')
+// var io = require('indian-ocean')
 var optimist = require('optimist')
 var joiner = require('../src/index.js')
 var queue = require('d3-queue').queue
+
+var io = require('../src/io/index.js')
 
 var argv = optimist
   .usage('Usage: joiner -a DATASET_A_PATH -k DATASET_A_KEY -b DATASET_B_PATH -j DATASET_B_KEY -o OUT_FILE_PATH [-r (summary|full) -n NEST_KEY --geojson]')
@@ -40,7 +42,8 @@ var argv = optimist
   })
   .options('o', {
     alias: 'out',
-    describe: 'Out path'
+    describe: 'Out path',
+    default: null
   })
   .options('r', {
     alias: 'report',
@@ -69,13 +72,12 @@ var reportDesc = argv.r || argv['report']
 
 var q = queue()
 
-var loadFnA = getDbfOrDataLoader(aPath)
-var loadFnB = getDbfOrDataLoader(bPath)
-
-q.defer(loadFnA, aPath)
-q.defer(loadFnB, bPath)
+q.defer(io.readData, aPath)
+q.defer(io.readData, bPath)
 
 q.await(function (err, aData, bData) {
+  console.log('adata', aData)
+  console.log('bdata', bData)
   if (err) {
     throw new Error(err)
   }
@@ -99,6 +101,7 @@ q.await(function (err, aData, bData) {
     })
     io.writeDataSync(stripExtension(outPath) + 'report.json', jd.report, {makeDirectories: true})
   } else {
+    console.log(jd.data)
     if (reportDesc === 'summary') {
       console.log(jd.report.prose.summary)
     } else {
@@ -107,11 +110,7 @@ q.await(function (err, aData, bData) {
   }
 })
 
-function getDbfOrDataLoader (path) {
-  return io.discernFormat(path) === 'dbf' ? io.readDbf : io.readData
-}
-
 function stripExtension (fullPath) {
-  var ext = io.discernFormat(fullPath)
+  var ext = io.helpers.discernFormat(fullPath)
   return fullPath.replace(new RegExp(ext + '$', 'g'), '')
 }

@@ -134,6 +134,7 @@ describe('cli', function () {
       }
       var cmd = './bin/index.js -a ' + leftDataPath + ' -k ' + config.leftDataKey + ' -b ' + newDataPath + ' -j ' + config.rightDataKey
       var outFile = 'test/tmp-test-left.json'
+      console.log(cmd)
       exec(cmd + ' -o ' + outFile, function (err, stdout, stderr) {
         assert(_.isEqual(err, null))
         var data = io.readDataSync(outFile)
