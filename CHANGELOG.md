@@ -8,8 +8,7 @@ Changelog
 Add a web interface and some small cleanup
 
 * Sort keys in example comments
-  * [0fac3167d9e226925ccadb86a7735b33bda9afb2](https://github.com/mhkeller/joiner/commit/0fac3167d9e226925ccadb86a7735b33bda9afb2)
-
+  * [14b2b64060fd280e03da3b75f5d007eb675bf58b](https://github.com/mhkeller/joiner/commit/14b2b64060fd280e03da3b75f5d007eb675bf58b)
 
 # 2.0.0
 
