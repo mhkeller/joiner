@@ -3,7 +3,7 @@ Changelog
 
 # 2.0.0
 
-> Not yet on npm
+> 2017-02-14
 
 Another rework of the API focused on clarity between json, geojson and nested variables. Much better and clearer support for targeting nested keys and adding results to a nested key through lodash's `get` and `set`. Started maintaining changelog. Remove indian-ocean dependency and include browser-safe portions.
 
