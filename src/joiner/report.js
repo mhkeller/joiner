@@ -8,8 +8,8 @@ function init () {
 }
 
 function create (reportData) {
-  var a = reportData.aKeys
-  var b = reportData.bKeys
+  var a = reportData.aKeys.sort()
+  var b = reportData.bKeys.sort()
 
   var report = { diff: {}, prose: {} }
   report.diff.a = a
