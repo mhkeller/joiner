@@ -43,6 +43,9 @@ console.log(joinedData)
 */
 
 ```
+## Examples
+
+See the **[`examples`](https://github.com/mhkeller/joiner/tree/master/examples)** folder for different file formats and options. Joiner is useful to verify whether all of your joins were successful and to spot any patterns among fields that didn't join properly. For example, you can see that the `county_01` row in dataset A didn't match with the `county_1` in dataset B and that you have a zero-padding issue going on.
 
 ## Installation
 
@@ -101,10 +104,6 @@ Optionally, you can pass in a key name under `nestKey` in case the left data's a
 If `geoJson` is true, performs a left join onto the `properties` object of each feature in a geoJson array.
 
 If you want to join on the `"id"` property, omit `leftDataKey`. If you want to join on a value in the `properties` object, set `leftDataKey` to `'properties.<desired-key-name>'` and set `nestKey` to `'properties'`. See examples for more.
-
-## Usage
-
-See the [`examples`](https://github.com/mhkeller/joiner/tree/master/examples) folder.
 
 ## Command line interface
 
