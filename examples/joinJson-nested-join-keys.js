@@ -122,20 +122,20 @@ console.log(JSON.stringify(joinedData))
   "report": {
     "diff": {
       "a": [
-        "Utah",
-        "Wyoming",
         "Colorado",
-        "New Mexico"
+        "New Mexico",
+        "Utah",
+        "Wyoming"
       ],
       "b": [
         "Colorado",
-        "Utah",
-        "New Mexico"
+        "New Mexico",
+        "Utah"
       ],
       "a_and_b": [
-        "Utah",
         "Colorado",
-        "New Mexico"
+        "New Mexico",
+        "Utah"
       ],
       "a_not_in_b": [
         "Wyoming"
@@ -144,7 +144,7 @@ console.log(JSON.stringify(joinedData))
     },
     "prose": {
       "summary": "3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.",
-      "full": "Matches in A and B: Utah, Colorado, New Mexico. A not in B: Wyoming."
+      "full": "Matches in A and B: Colorado, New Mexico, Utah. A not in B: Wyoming."
     }
   }
 }

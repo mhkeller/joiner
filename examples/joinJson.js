@@ -73,20 +73,20 @@ console.log(joinedData)
   "report": {
     "diff": {
       "a": [
-        "UT",
-        "WY",
         "CO",
-        "NM"
+        "NM",
+        "UT",
+        "WY"
       ],
       "b": [
         "CO",
-        "UT",
-        "NM"
+        "NM",
+        "UT"
       ],
       "a_and_b": [
-        "UT",
         "CO",
-        "NM"
+        "NM",
+        "UT"
       ],
       "a_not_in_b": [
         "WY"
@@ -95,7 +95,7 @@ console.log(joinedData)
     },
     "prose": {
       "summary": "3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.",
-      "full": "Matches in A and B: UT, CO, NM. A not in B: WY."
+      "full": "Matches in A and B: CO, NM, UT. A not in B: WY."
     }
   }
 }

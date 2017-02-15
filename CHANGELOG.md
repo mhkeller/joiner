@@ -1,6 +1,16 @@
 Changelog
 ===
 
+# 2.1.0
+
+> Not yet on npm
+
+Add a web interface and some small cleanup
+
+* Sort keys in example comments
+  * [0fac3167d9e226925ccadb86a7735b33bda9afb2](https://github.com/mhkeller/joiner/commit/0fac3167d9e226925ccadb86a7735b33bda9afb2)
+
+
 # 2.0.0
 
 > 2017-02-14

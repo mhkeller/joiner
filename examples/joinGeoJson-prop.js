@@ -247,8 +247,8 @@ console.log(JSON.stringify(joinedData))
       ],
       "b": [
         "Colorado",
-        "Utah",
-        "New Mexico"
+        "New Mexico",
+        "Utah"
       ],
       "a_and_b": [
         "Colorado",
