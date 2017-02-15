@@ -19,6 +19,8 @@ Another rework of the API focused on clarity between json, geojson and nested va
   * [104a89ee72e3024743845594b36356c44f91cf7b](https://github.com/mhkeller/joiner/commit/104a89ee72e3024743845594b36356c44f91cf7b)
   * [632b99c77aeba47ccaf7cad593a8a7708ffa57d4](https://github.com/mhkeller/joiner/commit/632b99c77aeba47ccaf7cad593a8a7708ffa57d4)
   * [590f7b85c78ccaf89a30ddb2c234c51d45b6b692](https://github.com/mhkeller/joiner/commit/590f7b85c78ccaf89a30ddb2c234c51d45b6b692)
+* Sort keys in the report
+  * [f80344a4eb8b3a6f29861969b6f712c8108ae16b](https://github.com/mhkeller/joiner/commit/f80344a4eb8b3a6f29861969b6f712c8108ae16b)
 * Drop support for node 2 and below
   * [765f094c691e53c32ca26db5c51e99e0c3c6eaa1](https://github.com/mhkeller/joiner/commit/765f094c691e53c32ca26db5c51e99e0c3c6eaa1)
   * [558d972824b08d9733a134b8d5fa1ba73c9af760](https://github.com/mhkeller/joiner/commit/558d972824b08d9733a134b8d5fa1ba73c9af760)
