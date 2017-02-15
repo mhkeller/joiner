@@ -242,8 +242,8 @@ console.log(JSON.stringify(joinedData))
       ],
       "b": [
         "CO",
-        "UT",
-        "NM"
+        "NM",
+        "UT"
       ],
       "a_and_b": [
         "CO",
