@@ -31,7 +31,7 @@ console.log(joinedData)
   ],
   report:
     { diff:
-      { a: [ 'UT', 'NM' ],
+      { a: [ 'NM', 'UT' ],
         b: [ 'NM' ],
         a_and_b: [ 'NM' ],
         a_not_in_b: [ 'UT' ],,
