@@ -1,14 +1,16 @@
 {
   "name": "joiner",
   "version": "2.0.0",
-  "description": "A simple utility for SQL-like joins with Json or GeoJson data. Also creates join reports so you can know how successful a given join was.",
+  "description": "A simple utility for SQL-like joins with Json or GeoJson data in Node, the browser and on the command line. Also creates join reports so you can know how successful a given join was.",
   "main": "dist/joiner.node.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
     "test": "standard src/**/* bin/**/* && mocha",
-    "build": "rollup --config",
+    "build:node": "rollup --config",
+    "build:umd": "rollup -c --banner \"$(preamble)\" -f umd -n joiner -o dist/joiner.js -- src/joiner/index.js && uglifyjs --preamble \"$(preamble)\" -o dist/joiner.min.js -cm -- dist/joiner.js",
+    "build": "npm run build:node && npm run build:umd",
     "start": "npm run build && npm test"
   },
   "bin": {
@@ -25,7 +27,10 @@
     "json",
     "geojson"
   ],
-  "author": "Michael Keller",
+  "author": {
+    "name": "Michael Keller",
+    "url": "code@mhkeller.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mhkeller/joiner/issues"
@@ -49,11 +54,13 @@
     "indian-ocean": "^2.0.1",
     "lodash": "^4.17.4",
     "mocha": "^3.2.0",
+    "package-preamble": "0.0.2",
     "rimraf": "^2.5.4",
     "rollup": "^0.41.4",
     "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^7.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "standard": "^8.6.0"
+    "standard": "^8.6.0",
+    "uglifyjs": "^2.4.10"
   }
 }
