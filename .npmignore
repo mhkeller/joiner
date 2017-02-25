@@ -2,3 +2,4 @@ src
 examples
 test
 CHANGELOG.md
+rollup.config.js
