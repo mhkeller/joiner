@@ -1,9 +1,9 @@
 Changelog
 ===
 
-# 2.0.1
+# 2.1.0
 
-> Not yet on npm
+> 2016-02-25
 
 Move to rollup build process, export browser version and some small cleanup
 
