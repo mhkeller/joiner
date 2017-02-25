@@ -4096,6 +4096,40 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
 function addNulls(data, nullKeyObj, nestKey) {
   data.forEach(function (datum) {
     var nestedDestination;
@@ -4112,7 +4146,7 @@ function addNulls(data, nullKeyObj, nestKey) {
     // You could extend `nullKeyObjPersist` with `datum` but that would reverse the order of your keys
     // And always put your keys that have nulls (which are probably the least important keys) first.
     // This way will overwrite everything with nulls, then rewrite keys that have values.
-    Object.assign(datum, nullKeyObj, datumPersist);
+    _extends(datum, nullKeyObj, datumPersist);
   });
   return data;
 }
@@ -4160,9 +4194,9 @@ function joinOnMatch(leftData, leftKeyColumn, keyMap, nestKey, geoJson, reportDa
     reportData.aKeys.push(leftKeyValue);
     if (match) {
       if (typeof nestKey === 'string' && nestKey !== '') {
-        set_1(datum, nestKey, Object.assign(get_1(datum, nestKey) || {}, match));
+        set_1(datum, nestKey, _extends(get_1(datum, nestKey) || {}, match));
       } else {
-        Object.assign(datum, match);
+        _extends(datum, match);
       }
     }
   });
