@@ -5,18 +5,20 @@ Changelog
 
 > Not yet on npm
 
-Move to rollup build process and some small cleanup
+Move to rollup build process, export browser version and some small cleanup
 
-* Sort keys in example comments
-  * [14b2b64060fd280e03da3b75f5d007eb675bf58b](https://github.com/mhkeller/joiner/commit/14b2b64060fd280e03da3b75f5d007eb675bf58b)
 * Rollup
   * [dddf7719845013930fab1c06b36ca4e216f44f38](https://github.com/mhkeller/joiner/commit/dddf7719845013930fab1c06b36ca4e216f44f38)
   * [51b590f0f42abfbbc10246fe89fae13339addd0e](https://github.com/mhkeller/joiner/commit/51b590f0f42abfbbc10246fe89fae13339addd0e)
   * [6d5b0b056a7d63281ccd9bdf667685b94d91585a](https://github.com/mhkeller/joiner/commit/6d5b0b056a7d63281ccd9bdf667685b94d91585a)
-* Some extra tests for sort order on object props now that we're using Object.assign shim and not underscore's extend
+* Browser version
+  * [a61d3a19f688af9543dfc10752212275fd48e092](https://github.com/mhkeller/joiner/commit/a61d3a19f688af9543dfc10752212275fd48e092)
+  * Some extra tests for sort order on object props now that we're using Object.assign shim and not underscore's extend
   * [f861d072c27691b6dc7b9ac9c7e37d77af490733](https://github.com/mhkeller/joiner/commit/f861d072c27691b6dc7b9ac9c7e37d77af490733)
   * [a9ac8b157bef43f94d321e4e20ba7896747d99db](https://github.com/mhkeller/joiner/commit/a9ac8b157bef43f94d321e4e20ba7896747d99db)
   * [a9ac8b157bef43f94d321e4e20ba7896747d99db](https://github.com/mhkeller/joiner/commit/a9ac8b157bef43f94d321e4e20ba7896747d99db)
+* Sort keys in example comments
+  * [14b2b64060fd280e03da3b75f5d007eb675bf58b](https://github.com/mhkeller/joiner/commit/14b2b64060fd280e03da3b75f5d007eb675bf58b)
 
 # 2.0.0
 
