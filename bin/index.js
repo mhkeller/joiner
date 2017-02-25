@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 var optimist = require('optimist')
-var joiner = require('../src/joiner/index.js')
+var joiner = require('../dist/joiner.node.js')
 var queue = require('d3-queue').queue
 
-var io = require('../src/io/index.js')
+var io = require('./io/index.js')
 
 var argv = optimist
   .usage('Usage: joiner -a DATASET_A_PATH -k DATASET_A_KEY -b DATASET_B_PATH -j DATASET_B_KEY -o OUT_FILE_PATH [-r (summary|full) -n NEST_KEY --geojson]')

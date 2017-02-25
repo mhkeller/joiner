@@ -2,12 +2,14 @@
   "name": "joiner",
   "version": "2.0.0",
   "description": "A simple utility for SQL-like joins with Json or GeoJson data. Also creates join reports so you can know how successful a given join was.",
-  "main": "src/joiner/index.js",
+  "main": "dist/joiner.node.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "standard && mocha"
+    "test": "standard src/**/* bin/**/* && mocha",
+    "build": "rollup --config",
+    "start": "npm run build && npm test"
   },
   "bin": {
     "joiner": "./bin/index.js"
@@ -33,20 +35,24 @@
     "d3-dsv": "^1.0.3",
     "d3-queue": "^3.0.3",
     "dbf": "^0.1.4",
-    "lodash.clonedeep": "^4.5.0",
-    "lodash.get": "^4.4.2",
-    "lodash.set": "^4.3.2",
-    "lodash.unset": "^4.5.2",
     "mkdirp": "^0.5.1",
     "optimist": "^0.6.1",
     "shapefile": "^0.6.2",
     "underscore": "~1.6.0"
   },
   "devDependencies": {
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-lodash": "^3.2.11",
+    "babel-preset-es2015": "^6.22.0",
     "chai": "^3.5.0",
     "indian-ocean": "^2.0.1",
+    "lodash": "^4.17.4",
     "mocha": "^3.2.0",
     "rimraf": "^2.5.4",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
     "standard": "^8.6.0"
   }
 }

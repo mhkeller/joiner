@@ -1,10 +1,9 @@
-var _ = require('underscore')
-var cloneDeep = require('lodash.clonedeep')
-var get = require('lodash.get')
-var set = require('lodash.set')
-var unset = require('lodash.unset')
+import cloneDeep from 'lodash/clonedeep'
+import get from 'lodash/get'
+import set from 'lodash/set'
+import unset from 'lodash/unset'
 
-var joinReport = require('./report.js')
+import joinReport from './report.js'
 
 function addNulls (data, nullKeyObj, nestKey) {
   data.forEach(function (datum) {
@@ -12,7 +11,7 @@ function addNulls (data, nullKeyObj, nestKey) {
     if (nestKey) {
       // Set the nested destination to an object if it isn't already or doesn't exist
       nestedDestination = get(datum, nestKey)
-      if (!_.isObject(nestedDestination) || _.isArray(nestedDestination) || _.isFunction(nestedDestination)) {
+      if (typeof nestedDestination !== 'object' || Array.isArray(nestedDestination) || typeof nestedDestination === 'function') {
         set(datum, nestKey, {})
       }
       datum = get(datum, nestKey)
@@ -22,7 +21,7 @@ function addNulls (data, nullKeyObj, nestKey) {
     // You could extend `nullKeyObjPersist` with `datum` but that would reverse the order of your keys
     // And always put your keys that have nulls (which are probably the least important keys) first.
     // This way will overwrite everything with nulls, then rewrite keys that have values.
-    _.extend(datum, nullKeyObj, datumPersist)
+    Object.assign(datum, nullKeyObj, datumPersist)
   })
   return data
 }
@@ -70,9 +69,9 @@ function joinOnMatch (leftData, leftKeyColumn, keyMap, nestKey, geoJson, reportD
     reportData.aKeys.push(leftKeyValue)
     if (match) {
       if (typeof nestKey === 'string' && nestKey !== '') {
-        set(datum, nestKey, _.extend(get(datum, nestKey) || {}, match))
+        set(datum, nestKey, Object.assign(get(datum, nestKey) || {}, match))
       } else {
-        _.extend(datum, match)
+        Object.assign(datum, match)
       }
     }
   })
@@ -116,4 +115,4 @@ function joinDataLeft (config) {
   return {data: joinedDataWithNull, report: report}
 }
 
-module.exports = joinDataLeft
+export default joinDataLeft

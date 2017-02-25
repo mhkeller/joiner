@@ -1,4 +1,5 @@
-var _ = require('underscore')
+import intersection from 'lodash/intersection'
+import difference from 'lodash/difference'
 
 function init () {
   return {
@@ -14,9 +15,9 @@ function create (reportData) {
   var report = { diff: {}, prose: {} }
   report.diff.a = a
   report.diff.b = b
-  report.diff.a_and_b = _.intersection(a, b)
-  report.diff.a_not_in_b = _.difference(a, b)
-  report.diff.b_not_in_a = _.difference(b, a)
+  report.diff.a_and_b = intersection(a, b)
+  report.diff.a_not_in_b = difference(a, b)
+  report.diff.b_not_in_a = difference(b, a)
 
   report.prose.summary = 'No matches. Try choosing different columns to match on.'
 
@@ -53,7 +54,6 @@ function printRows (length) {
   return length + ' row' + (length > 1 ? 's' : '')
 }
 
-module.exports = {
-  init: init,
-  create: create
+export default {
+  init, create
 }
