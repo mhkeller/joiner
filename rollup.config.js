@@ -3,7 +3,7 @@ import nodeResolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 
 export default {
-  entry: 'src/joiner/index.js',
+  entry: 'src/index.js',
   format: 'cjs',
   plugins: [ babel(), nodeResolve(), commonjs() ],
   dest: 'dist/joiner.node.js'

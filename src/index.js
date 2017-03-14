@@ -3,7 +3,7 @@ import get from 'lodash/get'
 import set from 'lodash/set'
 import unset from 'lodash/unset'
 
-import joinReport from './report.js'
+import joinReport from './utils/report.js'
 
 function addNulls (data, nullKeyObj, nestKey) {
   data.forEach(function (datum) {

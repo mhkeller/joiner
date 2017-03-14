@@ -9,7 +9,6 @@
   ],
   "plugins": [
     "transform-object-assign",
-    "lodash",
     "external-helpers"
   ]
 }

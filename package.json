@@ -3,13 +3,14 @@
   "version": "2.1.0",
   "description": "A simple utility for SQL-like joins with Json or GeoJson data in Node, the browser and on the command line. Also creates join reports so you can know how successful a given join was.",
   "main": "dist/joiner.node.js",
+  "module": "src/index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
     "test": "standard src/**/* bin/**/* && mocha",
     "build:node": "rollup --config",
-    "build:umd": "rollup -c --banner \"$(preamble)\" -f umd -n joiner -o dist/joiner.js -- src/joiner/index.js && uglifyjs --preamble \"$(preamble)\" -o dist/joiner.min.js -cm -- dist/joiner.js",
+    "build:umd": "rollup -c --banner \"$(preamble)\" -f umd -n joiner -o dist/joiner.js -- src/index.js && uglifyjs --preamble \"$(preamble)\" -o dist/joiner.min.js -cm -- dist/joiner.js",
     "build": "npm run build:node && npm run build:umd",
     "start": "npm run build && npm test"
   },
@@ -47,7 +48,6 @@
   },
   "devDependencies": {
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-lodash": "^3.2.11",
     "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-es2015": "^6.22.0",
     "chai": "^3.5.0",
