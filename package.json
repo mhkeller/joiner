@@ -1,6 +1,6 @@
 {
   "name": "joiner",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A simple utility for SQL-like joins with Json or GeoJson data in Node, the browser and on the command line. Also creates join reports so you can know how successful a given join was.",
   "main": "dist/joiner.node.js",
   "module": "src/index.js",
