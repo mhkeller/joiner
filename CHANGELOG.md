@@ -1,11 +1,11 @@
 Changelog
 ===
 
-# 2.1.1
+# 2.1.2
 
 > 2017-03-14
 
-Slight reorganization, add `module` field to package.json.
+Slight reorganization, add `module` field to package.json. Skipped 2.1.2 because of error in version number in dist file comments. Functionally identical.
 
 * See above
   * [eccfa17eba838b9358831a603f8cfb22055f6ac0](https://github.com/mhkeller/joiner/commit/eccfa17eba838b9358831a603f8cfb22055f6ac0)
