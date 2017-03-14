@@ -1,9 +1,18 @@
 Changelog
 ===
 
+# 2.1.1
+
+> 2017-03-14
+
+Slight reorganization, add `module` field to package.json.
+
+* See above
+  * [eccfa17eba838b9358831a603f8cfb22055f6ac0](https://github.com/mhkeller/joiner/commit/eccfa17eba838b9358831a603f8cfb22055f6ac0)
+
 # 2.1.0
 
-> 2016-02-25
+> 2017-02-25
 
 Move to rollup build process, export browser version and some small cleanup
 
