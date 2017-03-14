@@ -1,4 +1,4 @@
-// https://github.com/mhkeller/joiner Version 2.1.0. Copyright 2017 Michael Keller.
+// https://github.com/mhkeller/joiner Version 2.1.1. Copyright 2017 Michael Keller.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
