@@ -4052,7 +4052,7 @@ function create(reportData) {
   report.diff.b_not_in_a = difference_1(b, a);
 
   report.prose.summary = 'No matches. Try choosing different columns to match on.';
-  report.prose.full = 'No matches. A not in B: ' + report.diff.a_not_in_b.join(', ') + '. ' + 'B not in A: ' + report.diff.b_not_in_a.join(', ') + '.';
+  report.prose.full = 'A not in B: ' + report.diff.a_not_in_b.join(', ') + '. ' + 'B not in A: ' + report.diff.b_not_in_a.join(', ') + '.';
 
   // If it matched some things...
   if (report.diff.a_and_b.length !== 0) {

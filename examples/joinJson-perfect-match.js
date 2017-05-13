@@ -58,27 +58,28 @@ var joinedData = joiner({
 console.log(JSON.stringify(joinedData))
 
 /*
+
 {
   "data": [
     {
       "id": "1",
       "name": "UT",
-      "avg_temp": null
+      "avg_temp": 72
     },
     {
       "id": "2",
       "name": "WY",
-      "avg_temp": null
+      "avg_temp": 38
     },
     {
       "id": "3",
       "name": "CO",
-      "avg_temp": null
+      "avg_temp": 34
     },
     {
       "id": "4",
       "name": "NM",
-      "avg_temp": null
+      "avg_temp": 45
     }
   ],
   "report": {
@@ -90,28 +91,25 @@ console.log(JSON.stringify(joinedData))
         "WY"
       ],
       "b": [
-        "OH",
-        "TX",
-        "VT"
-      ],
-      "a_and_b": [],
-      "a_not_in_b": [
         "CO",
         "NM",
         "UT",
         "WY"
       ],
-      "b_not_in_a": [
-        "OH",
-        "TX",
-        "VT"
-      ]
+      "a_and_b": [
+        "CO",
+        "NM",
+        "UT",
+        "WY"
+      ],
+      "a_not_in_b": [],
+      "b_not_in_a": []
     },
     "prose": {
-      "summary": "No matches. Try choosing different columns to match on.",
-      "full": "No matches. A not in B: CO, NM, UT, WY. B not in A: OH, TX, VT."
+      "summary": "100%, one-to-one match of 4 rows!",
+      "full": "Matches in A and B: CO, NM, UT, WY"
     },
-    "matchStatus": "none"
+    "matchStatus": "perfect"
   }
 }
 */
