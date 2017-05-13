@@ -12,7 +12,7 @@ function create (reportData) {
   var a = reportData.aKeys.sort()
   var b = reportData.bKeys.sort()
 
-  var report = { diff: {}, prose: {} }
+  var report = { diff: {}, prose: {}, matchStatus: 'none' }
   report.diff.a = a
   report.diff.b = b
   report.diff.a_and_b = intersection(a, b)
@@ -24,8 +24,10 @@ function create (reportData) {
 
   // If it matched some things...
   if (report.diff.a_and_b.length !== 0) {
+    report.matchStatus = 'perfect'
     // But it wasn't a perfect match...
     if (report.diff.a_not_in_b.length !== 0 || report.diff.b_not_in_a.length !== 0) {
+      report.matchStatus = 'some'
       report.prose.summary = printRows(report.diff.a_and_b.length) + ' matched in A and B. '
       report.prose.full = 'Matches in A and B: ' + report.diff.a_and_b.join(', ') + '. '
 

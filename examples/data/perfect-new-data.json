@@ -1,0 +1,18 @@
+[
+  {
+    "state_name": "UT",
+    "avg_temp": 72
+  },
+  {
+    "state_name": "WY",
+    "avg_temp": 38
+  },
+  {
+    "state_name": "CO",
+    "avg_temp": 34
+  },
+  {
+    "state_name": "NM",
+    "avg_temp": 45
+  }
+]
