@@ -1,6 +1,15 @@
 Changelog
 ===
 
+# 3.0.0
+
+> Not yet on npm
+
+A small but potentially breaking change. Before, if you had no matches, `report.prose.full` would be `undefined`. Now it returns a similarly formatted text like `"No matches. A not in B: CO, NM, UT, WY. B not in A: OH, TX, VT."`
+
+* Full prose result when no match made
+  * [3f2d48a85ecd679ab2d3723f9932d1545c9ef47e](https://github.com/mhkeller/joiner/commit/3f2d48a85ecd679ab2d3723f9932d1545c9ef47e)
+
 # 2.1.2
 
 > 2017-03-14
