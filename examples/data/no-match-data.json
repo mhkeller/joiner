@@ -1,0 +1,14 @@
+[
+  {
+    "state_name": "VT",
+    "avg_temp": 20
+  },
+  {
+    "state_name": "TX",
+    "avg_temp": 78
+  },
+  {
+    "state_name": "OH",
+    "avg_temp": 62
+  }
+]

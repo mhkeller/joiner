@@ -20,6 +20,7 @@ function create (reportData) {
   report.diff.b_not_in_a = difference(b, a)
 
   report.prose.summary = 'No matches. Try choosing different columns to match on.'
+  report.prose.full = 'No matches. A not in B: ' + report.diff.a_not_in_b.join(', ') + '. ' + 'B not in A: ' + report.diff.b_not_in_a.join(', ') + '.'
 
   // If it matched some things...
   if (report.diff.a_and_b.length !== 0) {
@@ -43,6 +44,7 @@ function create (reportData) {
       }
     } else {
       report.prose.summary = '100%, one-to-one match of ' + report.diff.a.length + ' rows!'
+      report.prose.full = 'Matches in A and B: ' + report.diff.a_and_b.join(', ')
     }
     report.prose.summary = report.prose.summary.trim()
     report.prose.full = report.prose.full.trim()
