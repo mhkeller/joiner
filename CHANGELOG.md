@@ -10,7 +10,11 @@ A small but potentially breaking change. Before, if you had no matches, `report.
 * Full prose result when no match made
   * [3f2d48a85ecd679ab2d3723f9932d1545c9ef47e](https://github.com/mhkeller/joiner/commit/3f2d48a85ecd679ab2d3723f9932d1545c9ef47e)
 * Full prose result when perfect match made, add `report.matchStatus` key
-  * [3f2d48a85ecd679ab2d3723f9932d1545c9ef47e](https://github.com/mhkeller/joiner/commit/3f2d48a85ecd679ab2d3723f9932d1545c9ef47e)
+  * [6cebc9768ee06389bb07b47cb56be86175d99ca2](https://github.com/mhkeller/joiner/commit/6cebc9768ee06389bb07b47cb56be86175d99ca2)
+* Update examples, add new ones
+  * [2d75cf3cbbc8e6532d54e0e5d4121a8ed245aa31](https://github.com/mhkeller/joiner/commit/2d75cf3cbbc8e6532d54e0e5d4121a8ed245aa31)
+* Update readme
+  * [4ddc35ea96e560b55f7985ee4faecaaad1a1c4f8](https://github.com/mhkeller/joiner/commit/4ddc35ea96e560b55f7985ee4faecaaad1a1c4f8)
 
 # 2.1.2
 
