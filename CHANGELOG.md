@@ -13,6 +13,7 @@ A small but potentially breaking change. Before, if you had no matches, `report.
   * [6cebc9768ee06389bb07b47cb56be86175d99ca2](https://github.com/mhkeller/joiner/commit/6cebc9768ee06389bb07b47cb56be86175d99ca2)
 * Update examples, add new ones
   * [2d75cf3cbbc8e6532d54e0e5d4121a8ed245aa31](https://github.com/mhkeller/joiner/commit/2d75cf3cbbc8e6532d54e0e5d4121a8ed245aa31)
+  * [7139e11c1b258e6adb4f310674cebac627f3329e](https://github.com/mhkeller/joiner/commit/7139e11c1b258e6adb4f310674cebac627f3329e)
 * Update readme
   * [4ddc35ea96e560b55f7985ee4faecaaad1a1c4f8](https://github.com/mhkeller/joiner/commit/4ddc35ea96e560b55f7985ee4faecaaad1a1c4f8)
 
