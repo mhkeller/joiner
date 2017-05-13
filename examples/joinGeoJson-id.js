@@ -1,8 +1,8 @@
 var fs = require('fs')
-var joiner = require('../src/index.js')
+var joiner = require('../dist/joiner.node.js')
 
 var geoData = JSON.parse(fs.readFileSync('examples/data/us-states.geojson', 'utf-8'))
-var newData = JSON.parse(fs.readFileSync('examples/data/new-geo-data.json'))
+var newData = JSON.parse(fs.readFileSync('examples/data/new-geo-data.json', 'utf-8'))
 /*
 [
   {
@@ -79,6 +79,7 @@ console.log(JSON.stringify(joinedData))
           ]
         },
         "properties": {
+          "name": "Colorado",
           "state_name": "Colorado",
           "avg_temp": 34
         },
@@ -134,6 +135,7 @@ console.log(JSON.stringify(joinedData))
           ]
         },
         "properties": {
+          "name": "New Mexico",
           "state_name": "New Mexico",
           "avg_temp": 45
         },
@@ -177,6 +179,7 @@ console.log(JSON.stringify(joinedData))
           ]
         },
         "properties": {
+          "name": "Utah",
           "state_name": "Utah",
           "avg_temp": 72
         },
@@ -258,7 +261,8 @@ console.log(JSON.stringify(joinedData))
     "prose": {
       "summary": "3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.",
       "full": "Matches in A and B: CO, NM, UT. A not in B: WY."
-    }
+    },
+    "matchStatus": "some"
   }
 }
 */

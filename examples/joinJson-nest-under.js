@@ -4,9 +4,9 @@
 //
 // --------------------------------------------
 var fs = require('fs')
-var joiner = require('../src/index.js')
+var joiner = require('../dist/joiner.node.js')
 
-var data = JSON.parse(fs.readFileSync('examples/data/left-data-nested-three.json'))
+var data = JSON.parse(fs.readFileSync('examples/data/left-data-nested-three.json', 'utf-8'))
 /*
 [
   {
@@ -37,7 +37,7 @@ var data = JSON.parse(fs.readFileSync('examples/data/left-data-nested-three.json
 ]
 */
 
-var newData = JSON.parse(fs.readFileSync('examples/data/new-data-two.json'))
+var newData = JSON.parse(fs.readFileSync('examples/data/new-data-two.json', 'utf-8'))
 /*
 [
   {
@@ -111,7 +111,7 @@ console.log(JSON.stringify(joinedData))
         "Colorado",
         "New Mexico",
         "Utah",
-        "Wyoming",
+        "Wyoming"
       ],
       "b": [
         "Colorado",
@@ -131,7 +131,8 @@ console.log(JSON.stringify(joinedData))
     "prose": {
       "summary": "3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.",
       "full": "Matches in A and B: Colorado, New Mexico, Utah. A not in B: Wyoming."
-    }
+    },
+    "matchStatus": "some"
   }
 }
 */

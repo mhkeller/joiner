@@ -5,9 +5,11 @@ Changelog
 
 > Not yet on npm
 
-A small but potentially breaking change. Before, if you had no matches, `report.prose.full` would be `undefined`. Now it returns a similarly formatted text like `"No matches. A not in B: CO, NM, UT, WY. B not in A: OH, TX, VT."`
+A small but potentially breaking change. Before, if you had no matches, `report.prose.full` would be `undefined`. Now it returns a similarly formatted text like `"No matches. A not in B: CO, NM, UT, WY. B not in A: OH, TX, VT."`. Similarly, if you have a perfect match, `report.prose.full` will report out the matches. I'm making this change to have greater consistency in whether that field is always a string versus sometimes not existing. Also added string values onto the key `report.matchStatus` of either `'perfect'`, `'none'`, `'some'`.
 
 * Full prose result when no match made
+  * [3f2d48a85ecd679ab2d3723f9932d1545c9ef47e](https://github.com/mhkeller/joiner/commit/3f2d48a85ecd679ab2d3723f9932d1545c9ef47e)
+* Full prose result when perfect match made, add `report.matchStatus` key
   * [3f2d48a85ecd679ab2d3723f9932d1545c9ef47e](https://github.com/mhkeller/joiner/commit/3f2d48a85ecd679ab2d3723f9932d1545c9ef47e)
 
 # 2.1.2

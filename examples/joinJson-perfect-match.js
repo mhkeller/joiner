@@ -1,3 +1,9 @@
+// --------------------------------------------
+//
+// Attach joined data onto a nested key
+//
+// --------------------------------------------
+
 var fs = require('fs')
 var joiner = require('../dist/joiner.node.js')
 
@@ -19,16 +25,21 @@ var data = JSON.parse(fs.readFileSync('examples/data/left-data.json', 'utf-8'))
   }
 ]
 */
-var newData = JSON.parse(fs.readFileSync('examples/data/new-data.json', 'utf-8'))
+
+var newData = JSON.parse(fs.readFileSync('examples/data/perfect-new-data.json', 'utf-8'))
 /*
 [
   {
-    "state_name": "CO",
-    "avg_temp": 34
-  },
-  {
     "state_name": "UT",
     "avg_temp": 72
+  },
+  {
+    "state_name": "WY",
+    "avg_temp": 38
+  },
+  {
+    "state_name": "CO",
+    "avg_temp": 34
   },
   {
     "state_name": "NM",
@@ -52,7 +63,7 @@ console.log(JSON.stringify(joinedData))
     {
       "id": "1",
       "name": "UT",
-      "avg_temp": 72
+      "avg_temp": null
     },
     {
       "id": "2",
@@ -62,12 +73,12 @@ console.log(JSON.stringify(joinedData))
     {
       "id": "3",
       "name": "CO",
-      "avg_temp": 34
+      "avg_temp": null
     },
     {
       "id": "4",
       "name": "NM",
-      "avg_temp": 45
+      "avg_temp": null
     }
   ],
   "report": {
@@ -79,25 +90,28 @@ console.log(JSON.stringify(joinedData))
         "WY"
       ],
       "b": [
-        "CO",
-        "NM",
-        "UT"
+        "OH",
+        "TX",
+        "VT"
       ],
-      "a_and_b": [
-        "CO",
-        "NM",
-        "UT"
-      ],
+      "a_and_b": [],
       "a_not_in_b": [
+        "CO",
+        "NM",
+        "UT",
         "WY"
       ],
-      "b_not_in_a": []
+      "b_not_in_a": [
+        "OH",
+        "TX",
+        "VT"
+      ]
     },
     "prose": {
-      "summary": "3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.",
-      "full": "Matches in A and B: CO, NM, UT. A not in B: WY."
+      "summary": "No matches. Try choosing different columns to match on.",
+      "full": "No matches. A not in B: CO, NM, UT, WY. B not in A: OH, TX, VT."
     },
-    "matchStatus": "some"
+    "matchStatus": "none"
   }
 }
 */

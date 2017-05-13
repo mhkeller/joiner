@@ -1,3 +1,8 @@
+// --------------------------------------------
+//
+// Attach joined data onto a nested key
+//
+// --------------------------------------------
 var fs = require('fs')
 var joiner = require('../dist/joiner.node.js')
 
@@ -19,20 +24,21 @@ var data = JSON.parse(fs.readFileSync('examples/data/left-data.json', 'utf-8'))
   }
 ]
 */
-var newData = JSON.parse(fs.readFileSync('examples/data/new-data.json', 'utf-8'))
+
+var newData = JSON.parse(fs.readFileSync('examples/data/no-match-data.json', 'utf-8'))
 /*
 [
   {
-    "state_name": "CO",
-    "avg_temp": 34
+    "state_name": "VT",
+    "avg_temp": 20
   },
   {
-    "state_name": "UT",
-    "avg_temp": 72
+    "state_name": "TX",
+    "avg_temp": 78
   },
   {
-    "state_name": "NM",
-    "avg_temp": 45
+    "state_name": "OH",
+    "avg_temp": 62
   }
 ]
 */
@@ -57,7 +63,7 @@ console.log(JSON.stringify(joinedData))
     {
       "id": "2",
       "name": "WY",
-      "avg_temp": null
+      "avg_temp": 38
     },
     {
       "id": "3",
@@ -81,23 +87,23 @@ console.log(JSON.stringify(joinedData))
       "b": [
         "CO",
         "NM",
-        "UT"
+        "UT",
+        "WY"
       ],
       "a_and_b": [
         "CO",
         "NM",
-        "UT"
-      ],
-      "a_not_in_b": [
+        "UT",
         "WY"
       ],
+      "a_not_in_b": [],
       "b_not_in_a": []
     },
     "prose": {
-      "summary": "3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.",
-      "full": "Matches in A and B: CO, NM, UT. A not in B: WY."
+      "summary": "100%, one-to-one match of 4 rows!",
+      "full": "Matches in A and B: CO, NM, UT, WY"
     },
-    "matchStatus": "some"
+    "matchStatus": "perfect"
   }
 }
 */

@@ -1,8 +1,8 @@
 var fs = require('fs')
-var joiner = require('../src/index.js')
+var joiner = require('../dist/joiner.node.js')
 
-var geoData = JSON.parse(fs.readFileSync('examples/data/us-states.geojson'))
-var newData = JSON.parse(fs.readFileSync('examples/data/new-geo-data.json'))
+var geoData = JSON.parse(fs.readFileSync('examples/data/us-states.geojson', 'utf-8'))
+var newData = JSON.parse(fs.readFileSync('examples/data/new-geo-data.json', 'utf-8'))
 /*
 [
   {
@@ -263,7 +263,8 @@ console.log(JSON.stringify(joinedData))
     "prose": {
       "summary": "3 rows matched in A and B. 1 row in A not in B. All 3 rows in B in A.",
       "full": "Matches in A and B: Colorado, New Mexico, Utah. A not in B: Wyoming."
-    }
+    },
+    "matchStatus": "some"
   }
 }
 */
