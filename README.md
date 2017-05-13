@@ -25,21 +25,34 @@ var joinedData = joiner({
 
 console.log(joinedData)
 /*
-{ data:
-  [ { id: '1', name: 'UT', avg_temp: null },
-    { id: '4', name: 'NM', avg_temp: 45 }
+{
+  data: [
+    {
+      id: '1',
+      name: 'UT',
+      avg_temp: null
+    },
+    {
+      id: '4',
+      name: 'NM',
+      avg_temp: 45
+    }
   ],
-  report:
-    { diff:
-      { a: [ 'NM', 'UT' ],
-        b: [ 'NM' ],
-        a_and_b: [ 'NM' ],
-        a_not_in_b: [ 'UT' ],,
-        b_not_in_a: []
-      },
-     prose:
-      { summary: '1 row matched in A and B. 1 row in A not in B. All 1 row in B in A.',
-        full: 'Matches in A and B: NM. A not in B: UT.' } } }
+  report: {
+    diff: {
+      a: [ 'NM', 'UT' ],
+      b: [ 'NM' ],
+      a_and_b: [ 'NM' ],
+      a_not_in_b: [ 'UT' ],
+      b_not_in_a: []
+    },
+    prose: {
+      summary: '1 row matched in A and B. 1 row in A not in B. All 1 row in B in A.',
+      full: 'Matches in A and B: NM. A not in B: UT.'
+    },
+    matchStatus: 'some' // Can be 'perfect', 'none' or 'some'
+  }
+}
 */
 
 ```
@@ -68,19 +81,22 @@ To use as both, run both commands.
 All joins return an object with the following structure:
 
 ````
-data: [data object],
-report: {
-	diff: {
-		a: [data in A],
-		b: [data in B],
-		a_and_b: [data in A and B],
-		a_not_in_b: [data in A not in B],
-		b_not_in_a: [data in B not in A]
-	}:
-	prose: {
-		summary: [summary description of join result, number of matches in A and B, A not in B, B not in A.]
-		full:    [full list of which rows were joined in each of the above categories]
-	}
+{
+  data: [data object],
+  report: {
+  	diff: {
+  		a: [data in A],
+  		b: [data in B],
+  		a_and_b: [data in A and B],
+  		a_not_in_b: [data in A not in B],
+  		b_not_in_a: [data in B not in A]
+  	}:
+  	prose: {
+  		summary: [summary description of join result, number of matches in A and B, A not in B, B not in A.]
+  		full:    [full list of which rows were joined in each of the above categories]
+  	},
+    matchStatus: [a string that will be either 'perfect', 'none' or 'some']
+  }
 }
 ````
 
