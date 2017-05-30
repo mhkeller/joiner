@@ -20,6 +20,8 @@ A small but potentially breaking change. Before, if you had no matches, `report.
   * [39457dcae816f9acd9203d6857f6faa0d41894a2](https://github.com/mhkeller/joiner/commit/39457dcae816f9acd9203d6857f6faa0d41894a2)
 * Proper uglify-js package
   * [3f51eef06c7bbb54d8db267cfd39fdb15f6a59f3](https://github.com/mhkeller/joiner/commit/3f51eef06c7bbb54d8db267cfd39fdb15f6a59f3)
+* Export es6 version
+  * [6c7679cb9b99eb29deb4b9221c5972308fe305ed](https://github.com/mhkeller/joiner/commit/6c7679cb9b99eb29deb4b9221c5972308fe305ed)
 
 # 2.1.2
 
