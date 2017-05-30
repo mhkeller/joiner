@@ -19,6 +19,7 @@ A small but potentially breaking change. Before, if you had no matches, `report.
 * Console warnings instead of console errors on duplicate entry. Tense agreement.
   * [39457dcae816f9acd9203d6857f6faa0d41894a2](https://github.com/mhkeller/joiner/commit/39457dcae816f9acd9203d6857f6faa0d41894a2)
 * Proper uglify-js package
+  * [3f51eef06c7bbb54d8db267cfd39fdb15f6a59f3](https://github.com/mhkeller/joiner/commit/3f51eef06c7bbb54d8db267cfd39fdb15f6a59f3)
 
 # 2.1.2
 
