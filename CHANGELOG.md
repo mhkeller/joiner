@@ -16,6 +16,7 @@ A small but potentially breaking change. Before, if you had no matches, `report.
   * [7139e11c1b258e6adb4f310674cebac627f3329e](https://github.com/mhkeller/joiner/commit/7139e11c1b258e6adb4f310674cebac627f3329e)
 * Update readme
   * [4ddc35ea96e560b55f7985ee4faecaaad1a1c4f8](https://github.com/mhkeller/joiner/commit/4ddc35ea96e560b55f7985ee4faecaaad1a1c4f8)
+* Console warnings instead of console errors on duplicate entry. Tense agreement.
 
 # 2.1.2
 

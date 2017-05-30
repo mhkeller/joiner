@@ -52,7 +52,7 @@ function indexRightDataOnKey (rightData, rightKeyColumn, reportData) {
       // Log the new keys that we've encountered for a comprehensive list at the end
       addToNullMatch(keyMap, Object.keys(datumPersist))
     } else {
-      console.error('[Joiner] Duplicate entry for "' + rightKeyValue + '"')
+      console.log('Warning: [Joiner] Duplicate entry for "' + rightKeyValue + '" in right data.')
     }
   })
   return keyMap
