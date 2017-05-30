@@ -44,6 +44,7 @@
     "mkdirp": "^0.5.1",
     "optimist": "^0.6.1",
     "shapefile": "^0.6.2",
+    "uglify-js": "^3.0.13",
     "underscore": "~1.6.0"
   },
   "devDependencies": {

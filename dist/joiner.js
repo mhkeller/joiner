@@ -4069,7 +4069,7 @@ function create(reportData) {
       report.prose.full = 'Matches in A and B: ' + report.diff.a_and_b.join(', ') + '. ';
 
       if (report.diff.a_not_in_b.length === 0) {
-        report.prose.summary += 'All ' + printRows(report.diff.a.length) + ' in A find a match. ';
+        report.prose.summary += 'All ' + printRows(report.diff.a.length) + ' in A found a match. ';
       } else {
         report.prose.summary += printRows(report.diff.a_not_in_b.length) + ' in A not in B. ';
         report.prose.full += 'A not in B: ' + report.diff.a_not_in_b.join(', ') + '. ';
@@ -4186,7 +4186,7 @@ function indexRightDataOnKey(rightData, rightKeyColumn, reportData) {
       // Log the new keys that we've encountered for a comprehensive list at the end
       addToNullMatch(keyMap, Object.keys(datumPersist));
     } else {
-      console.error('[Joiner] Duplicate entry for "' + rightKeyValue + '"');
+      console.log('Warning: [Joiner] Duplicate entry for "' + rightKeyValue + '" in right data.');
     }
   });
   return keyMap;
