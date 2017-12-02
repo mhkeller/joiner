@@ -1,10 +1,12 @@
 Joiner
 ======
 
-[![Build Status](https://secure.travis-ci.org/mhkeller/joiner.png?branch=master&style=flat-square)](http://travis-ci.org/mhkeller/joiner) [![NPM version](https://badge.fury.io/js/joiner.png?style=flat)](http://badge.fury.io/js/joiner) [![npm](https://img.shields.io/npm/dm/joiner.svg)](https://www.npmjs.com/package/joiner)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
+[![Build Status](https://img.shields.io/travis/mhkeller/joiner/master.svg?style=flat-square)](http://travis-ci.org/mhkeller/joiner)
+[![NPM version](https://badge.fury.io/js/joiner.png?style=flat)](http://badge.fury.io/js/joiner)
+[![npm](https://img.shields.io/npm/v/joiner.svg?style=flat-square)](https://www.npmjs.com/package/joiner)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-00b9e7.svg?style=flat-square)](https://github.com/feross/standard)
 
-A simple utility for SQL-like joins with Json or geoJson data in Node, the browser and on the command line. Also creates join reports so you can know how successful a given join is.
+A simple utility for SQL-like joins with Json or geoJson data in Node, the browser and on the command line. It creates join reports so you can know how successful your join was.
 
 ```js
 var data = [
@@ -50,7 +52,7 @@ console.log(joinedData)
       summary: '1 row matched in A and B. 1 row in A not in B. All 1 row in B in A.',
       full: 'Matches in A and B: NM. A not in B: UT.'
     },
-    matchStatus: 'some' // Can be 'perfect', 'none' or 'some'
+    matchStatus: 'some' // Can be 'perfect', 'none', 'some', 'all-in-a' or 'all-in-b'
   }
 }
 */
@@ -95,7 +97,7 @@ All joins return an object with the following structure:
   		summary: [summary description of join result, number of matches in A and B, A not in B, B not in A.]
   		full:    [full list of which rows were joined in each of the above categories]
   	},
-    matchStatus: [a string that will be either 'perfect', 'none' or 'some']
+    matchStatus: [a string that will be either 'perfect', 'none', 'some', 'all-in-a', 'all-in-b']
   }
 }
 ````

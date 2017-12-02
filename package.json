@@ -54,6 +54,7 @@
     "indian-ocean": "^2.0.1",
     "lodash": "^4.17.4",
     "mocha": "^3.2.0",
+    "nyc": "^11.3.0",
     "package-preamble": "0.0.2",
     "rimraf": "^2.5.4",
     "rollup": "^0.41.4",
