@@ -4062,6 +4062,7 @@ function create(reportData) {
       report.prose.full = 'Matches in A and B: ' + report.diff.a_and_b.join(', ') + '. ';
 
       if (report.diff.a_not_in_b.length === 0) {
+        report.matchStatus = 'all-in-a';
         report.prose.summary += 'All ' + printRows(report.diff.a.length) + ' in A found a match. ';
       } else {
         report.prose.summary += printRows(report.diff.a_not_in_b.length) + ' in A not in B. ';
@@ -4069,7 +4070,8 @@ function create(reportData) {
       }
 
       if (report.diff.b_not_in_a.length === 0) {
-        report.prose.summary += 'All ' + printRows(report.diff.b.length) + ' in B in A. ';
+        report.matchStatus = 'all-in-b';
+        report.prose.summary += 'All ' + printRows(report.diff.b.length) + ' in B in A found a match. ';
       } else {
         report.prose.summary += printRows(report.diff.b_not_in_a.length) + ' in B not in A. ';
         report.prose.full += 'B not in A: ' + report.diff.b_not_in_a.join(', ') + '. ';
