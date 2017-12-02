@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Removes all key-value entries from the list cache.
  *
@@ -4244,4 +4242,4 @@ function joinDataLeft(config) {
   return { data: joinedDataWithNull, report: report };
 }
 
-module.exports = joinDataLeft;
+export default joinDataLeft;

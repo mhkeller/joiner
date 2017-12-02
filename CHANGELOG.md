@@ -16,6 +16,12 @@ A small but potentially breaking change. Before, if you had no matches, `report.
   * [7139e11c1b258e6adb4f310674cebac627f3329e](https://github.com/mhkeller/joiner/commit/7139e11c1b258e6adb4f310674cebac627f3329e)
 * Update readme
   * [4ddc35ea96e560b55f7985ee4faecaaad1a1c4f8](https://github.com/mhkeller/joiner/commit/4ddc35ea96e560b55f7985ee4faecaaad1a1c4f8)
+* Console warnings instead of console errors on duplicate entry. Tense agreement.
+  * [39457dcae816f9acd9203d6857f6faa0d41894a2](https://github.com/mhkeller/joiner/commit/39457dcae816f9acd9203d6857f6faa0d41894a2)
+* Proper uglify-js package
+  * [3f51eef06c7bbb54d8db267cfd39fdb15f6a59f3](https://github.com/mhkeller/joiner/commit/3f51eef06c7bbb54d8db267cfd39fdb15f6a59f3)
+* Export es6 version
+  * [6c7679cb9b99eb29deb4b9221c5972308fe305ed](https://github.com/mhkeller/joiner/commit/6c7679cb9b99eb29deb4b9221c5972308fe305ed)
 
 # 2.1.2
 
