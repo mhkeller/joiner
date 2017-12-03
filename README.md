@@ -115,12 +115,12 @@ Optionally, you can pass in a key name under `nestKey` in case the left data's a
 
 | parameter    | type     | description    |
 | :------------|:-------- |:---------------|
-| leftData     | Array    | existing data  |
-| leftDataKey  | [String] | key to join on, defaults to `"id"` if not set and `geoJson: true` |
-| rightData    | Array    | new data       |
-| rightDataKey | String   | key to join on |
-| geoJson      | [Boolean] default=false | optional, key name holding attribute |
-| nestKey      | [String] | optional, key name holding attribute, feaults to `"properties"` if not set and `geoJson: true` |
+| leftData     | `Array`    | existing data  |
+| leftDataKey  | `[String]` | key to join on, defaults to `"id"` if not set and `geoJson: true` |
+| rightData    | `Array`    | new data       |
+| rightDataKey | `String`   | key to join on |
+| geoJson      | `[Boolean]` default=`false` | optional, key name holding attribute |
+| nestKey      | `[String]` | optional, key name holding attribute, feaults to `"properties"` if not set and `geoJson: true` |
 
 #### Joining to GeoJson
 
