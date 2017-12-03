@@ -147,6 +147,12 @@ Options:
 
 ````
 
+Example
+
+```sh
+joiner -a path/to/left.csv -k name -b path/to/right.csv -j name1 -o join-result.csv
+```
+
 In most cases, the first four parameters (`--apath`, `--akey`, `--bpath` and `--bkey`) are required. `--akey` is not required if you have set geojson to true by using `-g` or `--geojson` since it will join on the `"id"` field. If you want to join on a property field in geojson, then set that using `--akey`.
 
 If you specify an output file, it will write the join result to the specified file and the report to the same directory. Intermediate directories will be created if they don't already exist. For example, `-o path/to/output.csv` will also write `-o path/to/output-report.json` and create the `to/` folder if it isn't already there. If you don't specify an output file, it will print the results to the console.
