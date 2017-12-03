@@ -8,6 +8,12 @@ Joiner
 
 A simple utility for SQL-like joins with Json or geoJson data in Node, the browser and on the command line. It creates join reports so you can know how successful your join was.
 
+* [Examples](#examples)
+* [Installation](#installation)
+* [JavaScript API](#javascript-api)
+  - [Joining to GeoJson](#joining-to-geojson)
+* [Command Line Interface](#command-line-interface)
+
 ```js
 var data = [
   { "id": "1", "name": "UT" },
@@ -78,7 +84,7 @@ npm install joiner -g
 
 To use as both, run both commands.
 
-## Methods
+## JavaScript API
 
 All joins return an object with the following structure:
 
@@ -117,13 +123,13 @@ Optionally, you can pass in a key name under `nestKey` in case the left data's a
 | geoJson      | [Boolean] default=false | optional, key name holding attribute |
 | nestKey      | [String] | optional, key name holding attribute, feaults to `"properties"` if not set and `geoJson: true` |
 
-#### Joining to geoJson
+#### Joining to GeoJson
 
 If `geoJson` is true, performs a left join onto the `properties` object of each feature in a geoJson array.
 
 If you want to join on the `"id"` property, omit `leftDataKey`. If you want to join on a value in the `properties` object, set `leftDataKey` to `'properties.<desired-key-name>'` and set `nestKey` to `'properties'`. See examples for more.
 
-## Command line interface
+## Command Line Interface
 
 ````
 Usage: joiner -a DATASET_A_PATH -k DATASET_A_KEY -b DATASET_B_PATH -j DATASET_B_KEY -o OUT_FILE_PATH [-r (summary|full) -n NEST_KEY --geojson]
