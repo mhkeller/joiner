@@ -2,8 +2,7 @@ Joiner
 ======
 
 [![Build Status](https://img.shields.io/travis/mhkeller/joiner/master.svg?style=flat-square)](http://travis-ci.org/mhkeller/joiner)
-[![NPM version](https://badge.fury.io/js/joiner.png?style=flat)](http://badge.fury.io/js/joiner)
-[![npm](https://img.shields.io/npm/v/joiner.svg?style=flat-square)](https://www.npmjs.com/package/joiner)
+[![npm version](https://img.shields.io/npm/v/joiner.svg?style=flat-square)](https://www.npmjs.com/package/joiner)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-00b9e7.svg?style=flat-square)](https://github.com/feross/standard)
 
 A simple utility for SQL-like joins with Json or geoJson data in Node, the browser and on the command line. It creates join reports so you can know how successful your join was.
@@ -108,7 +107,7 @@ All joins return an object with the following structure:
 }
 ````
 
-### **joiner**(options)
+<a href="#joiner" id="joiner">#</a> **joiner**(options)
 
 Perform a left join on the two array of object json datasets. It performs a deep clone using [lodash.clonedeep](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object.
 
@@ -147,7 +146,7 @@ Options:
 
 ````
 
-Example
+**Example**
 
 ```sh
 joiner -a path/to/left.csv -k name -b path/to/right.csv -j name1 -o join-result.csv
