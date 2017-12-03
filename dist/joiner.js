@@ -1,4 +1,4 @@
-// https://github.com/mhkeller/joiner Version 2.1.2. Copyright 2017 Michael Keller.
+/* @version joiner 2.1.2 */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
@@ -52,7 +52,7 @@ var _listCacheClear = listCacheClear$1;
  * // => true
  */
 function eq$1(value, other) {
-  return value === other || value !== value && other !== other;
+  return value === other || (value !== value && other !== other);
 }
 
 var eq_1 = eq$1;
@@ -193,14 +193,14 @@ var listCacheSet = _listCacheSet;
  * @param {Array} [entries] The key-value pairs to cache.
  */
 function ListCache$1(entries) {
-    var index = -1,
-        length = entries == null ? 0 : entries.length;
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-    this.clear();
-    while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-    }
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
 // Add methods to `ListCache`.
@@ -222,7 +222,7 @@ var ListCache$2 = _ListCache;
  * @memberOf Stack
  */
 function stackClear$1() {
-  this.__data__ = new ListCache$2();
+  this.__data__ = new ListCache$2;
   this.size = 0;
 }
 
@@ -398,10 +398,12 @@ var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : undefined;
  * @returns {string} Returns the `toStringTag`.
  */
 function baseGetTag$1(value) {
-    if (value == null) {
-        return value === undefined ? undefinedTag : nullTag;
-    }
-    return symToStringTag && symToStringTag in Object(value) ? getRawTag(value) : objectToString(value);
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return (symToStringTag && symToStringTag in Object(value))
+    ? getRawTag(value)
+    : objectToString(value);
 }
 
 var _baseGetTag = baseGetTag$1;
@@ -465,13 +467,13 @@ var proxyTag = '[object Proxy]';
  * // => false
  */
 function isFunction$1(value) {
-    if (!isObject$2(value)) {
-        return false;
-    }
-    // The use of `Object#toString` avoids issues with the `typeof` operator
-    // in Safari 9 which returns 'object' for typed arrays and other constructors.
-    var tag = baseGetTag(value);
-    return tag == funcTag$1 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
+  if (!isObject$2(value)) {
+    return false;
+  }
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 9 which returns 'object' for typed arrays and other constructors.
+  var tag = baseGetTag(value);
+  return tag == funcTag$1 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
 }
 
 var isFunction_1 = isFunction$1;
@@ -486,10 +488,10 @@ var _coreJsData = coreJsData$1;
 var coreJsData = _coreJsData;
 
 /** Used to detect methods masquerading as native. */
-var maskSrcKey = function () {
+var maskSrcKey = (function() {
   var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-  return uid ? 'Symbol(src)_1.' + uid : '';
-}();
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
 
 /**
  * Checks if `func` has its source masked.
@@ -499,7 +501,7 @@ var maskSrcKey = function () {
  * @returns {boolean} Returns `true` if `func` is masked, else `false`.
  */
 function isMasked$1(func) {
-  return !!maskSrcKey && maskSrcKey in func;
+  return !!maskSrcKey && (maskSrcKey in func);
 }
 
 var _isMasked = isMasked$1;
@@ -523,7 +525,7 @@ function toSource$1(func) {
       return funcToString$1.call(func);
     } catch (e) {}
     try {
-      return func + '';
+      return (func + '');
     } catch (e) {}
   }
   return '';
@@ -556,7 +558,10 @@ var funcToString = funcProto.toString;
 var hasOwnProperty = objectProto.hasOwnProperty;
 
 /** Used to detect if a method is native. */
-var reIsNative = RegExp('^' + funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+var reIsNative = RegExp('^' +
+  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
 
 /**
  * The base implementation of `_.isNative` without bad shim checks.
@@ -707,7 +712,7 @@ var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
  */
 function hashHas$1(key) {
   var data = this.__data__;
-  return nativeCreate$3 ? data[key] !== undefined : hasOwnProperty$3.call(data, key);
+  return nativeCreate$3 ? (data[key] !== undefined) : hasOwnProperty$3.call(data, key);
 }
 
 var _hashHas = hashHas$1;
@@ -730,7 +735,7 @@ var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
 function hashSet$1(key, value) {
   var data = this.__data__;
   this.size += this.has(key) ? 0 : 1;
-  data[key] = nativeCreate$4 && value === undefined ? HASH_UNDEFINED$1 : value;
+  data[key] = (nativeCreate$4 && value === undefined) ? HASH_UNDEFINED$1 : value;
   return this;
 }
 
@@ -750,14 +755,14 @@ var hashSet = _hashSet;
  * @param {Array} [entries] The key-value pairs to cache.
  */
 function Hash$1(entries) {
-    var index = -1,
-        length = entries == null ? 0 : entries.length;
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-    this.clear();
-    while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-    }
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
 // Add methods to `Hash`.
@@ -783,9 +788,9 @@ var Map$2 = _Map;
 function mapCacheClear$1() {
   this.size = 0;
   this.__data__ = {
-    'hash': new Hash(),
-    'map': new (Map$2 || ListCache$4)(),
-    'string': new Hash()
+    'hash': new Hash,
+    'map': new (Map$2 || ListCache$4),
+    'string': new Hash
   };
 }
 
@@ -800,7 +805,9 @@ var _mapCacheClear = mapCacheClear$1;
  */
 function isKeyable$1(value) {
   var type = typeof value;
-  return type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean' ? value !== '__proto__' : value === null;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
 }
 
 var _isKeyable = isKeyable$1;
@@ -817,7 +824,9 @@ var isKeyable = _isKeyable;
  */
 function getMapData$1(map, key) {
   var data = map.__data__;
-  return isKeyable(key) ? data[typeof key == 'string' ? 'string' : 'hash'] : data.map;
+  return isKeyable(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
 }
 
 var _getMapData = getMapData$1;
@@ -912,14 +921,14 @@ var mapCacheSet = _mapCacheSet;
  * @param {Array} [entries] The key-value pairs to cache.
  */
 function MapCache$1(entries) {
-    var index = -1,
-        length = entries == null ? 0 : entries.length;
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-    this.clear();
-    while (++index < length) {
-        var entry = entries[index];
-        this.set(entry[0], entry[1]);
-    }
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
 // Add methods to `MapCache`.
@@ -952,7 +961,7 @@ function stackSet$1(key, value) {
   var data = this.__data__;
   if (data instanceof ListCache$3) {
     var pairs = data.__data__;
-    if (!Map || pairs.length < LARGE_ARRAY_SIZE - 1) {
+    if (!Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
       pairs.push([key, value]);
       this.size = ++data.size;
       return this;
@@ -1019,13 +1028,13 @@ var _arrayEach = arrayEach$1;
 
 var getNative$3 = _getNative;
 
-var defineProperty$1 = function () {
+var defineProperty$1 = (function() {
   try {
     var func = getNative$3(Object, 'defineProperty');
     func({}, '', {});
     return func;
   } catch (e) {}
-}();
+}());
 
 var _defineProperty = defineProperty$1;
 
@@ -1076,7 +1085,8 @@ var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
  */
 function assignValue$1(object, key, value) {
   var objValue = object[key];
-  if (!(hasOwnProperty$4.call(object, key) && eq$2(objValue, value)) || value === undefined && !(key in object)) {
+  if (!(hasOwnProperty$4.call(object, key) && eq$2(objValue, value)) ||
+      (value === undefined && !(key in object))) {
     baseAssignValue(object, key, value);
   }
 }
@@ -1106,7 +1116,9 @@ function copyObject$1(source, props, object, customizer) {
   while (++index < length) {
     var key = props[index];
 
-    var newValue = customizer ? customizer(object[key], source[key], key, object, source) : undefined;
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : undefined;
 
     if (newValue === undefined) {
       newValue = source[key];
@@ -1222,10 +1234,9 @@ var propertyIsEnumerable = objectProto$7.propertyIsEnumerable;
  * _.isArguments([1, 2, 3]);
  * // => false
  */
-var isArguments$1 = baseIsArguments(function () {
-    return arguments;
-}()) ? baseIsArguments : function (value) {
-    return isObjectLike(value) && hasOwnProperty$6.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
+var isArguments$1 = baseIsArguments(function() { return arguments; }()) ? baseIsArguments : function(value) {
+  return isObjectLike(value) && hasOwnProperty$6.call(value, 'callee') &&
+    !propertyIsEnumerable.call(value, 'callee');
 };
 
 var isArguments_1 = isArguments$1;
@@ -1333,7 +1344,9 @@ var reIsUint = /^(?:0|[1-9]\d*)$/;
  */
 function isIndex$1(value, length) {
   length = length == null ? MAX_SAFE_INTEGER : length;
-  return !!length && (typeof value == 'number' || reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
 }
 
 var _isIndex = isIndex$1;
@@ -1368,7 +1381,8 @@ var MAX_SAFE_INTEGER$1 = 9007199254740991;
  * // => false
  */
 function isLength$1(value) {
-  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER$1;
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER$1;
 }
 
 var isLength_1 = isLength$1;
@@ -1406,8 +1420,19 @@ var uint32Tag$1 = '[object Uint32Array]';
 
 /** Used to identify `toStringTag` values of typed arrays. */
 var typedArrayTags = {};
-typedArrayTags[float32Tag$1] = typedArrayTags[float64Tag$1] = typedArrayTags[int8Tag$1] = typedArrayTags[int16Tag$1] = typedArrayTags[int32Tag$1] = typedArrayTags[uint8Tag$1] = typedArrayTags[uint8ClampedTag$1] = typedArrayTags[uint16Tag$1] = typedArrayTags[uint32Tag$1] = true;
-typedArrayTags[argsTag$2] = typedArrayTags[arrayTag$1] = typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$1] = typedArrayTags[dataViewTag$1] = typedArrayTags[dateTag$1] = typedArrayTags[errorTag$1] = typedArrayTags[funcTag$2] = typedArrayTags[mapTag$1] = typedArrayTags[numberTag$1] = typedArrayTags[objectTag$1] = typedArrayTags[regexpTag$1] = typedArrayTags[setTag$1] = typedArrayTags[stringTag$1] = typedArrayTags[weakMapTag$1] = false;
+typedArrayTags[float32Tag$1] = typedArrayTags[float64Tag$1] =
+typedArrayTags[int8Tag$1] = typedArrayTags[int16Tag$1] =
+typedArrayTags[int32Tag$1] = typedArrayTags[uint8Tag$1] =
+typedArrayTags[uint8ClampedTag$1] = typedArrayTags[uint16Tag$1] =
+typedArrayTags[uint32Tag$1] = true;
+typedArrayTags[argsTag$2] = typedArrayTags[arrayTag$1] =
+typedArrayTags[arrayBufferTag$1] = typedArrayTags[boolTag$1] =
+typedArrayTags[dataViewTag$1] = typedArrayTags[dateTag$1] =
+typedArrayTags[errorTag$1] = typedArrayTags[funcTag$2] =
+typedArrayTags[mapTag$1] = typedArrayTags[numberTag$1] =
+typedArrayTags[objectTag$1] = typedArrayTags[regexpTag$1] =
+typedArrayTags[setTag$1] = typedArrayTags[stringTag$1] =
+typedArrayTags[weakMapTag$1] = false;
 
 /**
  * The base implementation of `_.isTypedArray` without Node.js optimizations.
@@ -1417,7 +1442,8 @@ typedArrayTags[argsTag$2] = typedArrayTags[arrayTag$1] = typedArrayTags[arrayBuf
  * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
  */
 function baseIsTypedArray$1(value) {
-    return isObjectLike$3(value) && isLength(value.length) && !!typedArrayTags[baseGetTag$3(value)];
+  return isObjectLike$3(value) &&
+    isLength(value.length) && !!typedArrayTags[baseGetTag$3(value)];
 }
 
 var _baseIsTypedArray = baseIsTypedArray$1;
@@ -1430,7 +1456,7 @@ var _baseIsTypedArray = baseIsTypedArray$1;
  * @returns {Function} Returns the new capped function.
  */
 function baseUnary$1(func) {
-  return function (value) {
+  return function(value) {
     return func(value);
   };
 }
@@ -1453,11 +1479,11 @@ var moduleExports = freeModule && freeModule.exports === freeExports;
 var freeProcess = moduleExports && freeGlobal.process;
 
 /** Used to access faster Node.js helpers. */
-var nodeUtil = function () {
+var nodeUtil = (function() {
   try {
     return freeProcess && freeProcess.binding && freeProcess.binding('util');
   } catch (e) {}
-}();
+}());
 
 module.exports = nodeUtil;
 });
@@ -1521,15 +1547,17 @@ function arrayLikeKeys$1(value, inherited) {
       length = result.length;
 
   for (var key in value) {
-    if ((inherited || hasOwnProperty$5.call(value, key)) && !(skipIndexes && (
-    // Safari 9 has enumerable `arguments.length` in strict mode.
-    key == 'length' ||
-    // Node.js 0.10 has enumerable non-index properties on buffers.
-    isBuff && (key == 'offset' || key == 'parent') ||
-    // PhantomJS 2 has enumerable non-index properties on typed arrays.
-    isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset') ||
-    // Skip index properties.
-    isIndex(key, length)))) {
+    if ((inherited || hasOwnProperty$5.call(value, key)) &&
+        !(skipIndexes && (
+           // Safari 9 has enumerable `arguments.length` in strict mode.
+           key == 'length' ||
+           // Node.js 0.10 has enumerable non-index properties on buffers.
+           (isBuff && (key == 'offset' || key == 'parent')) ||
+           // PhantomJS 2 has enumerable non-index properties on typed arrays.
+           (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+           // Skip index properties.
+           isIndex(key, length)
+        ))) {
       result.push(key);
     }
   }
@@ -1550,7 +1578,7 @@ var objectProto$9 = Object.prototype;
  */
 function isPrototype$1(value) {
   var Ctor = value && value.constructor,
-      proto = typeof Ctor == 'function' && Ctor.prototype || objectProto$9;
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$9;
 
   return value === proto;
 }
@@ -1566,7 +1594,7 @@ var _isPrototype = isPrototype$1;
  * @returns {Function} Returns the new function.
  */
 function overArg$1(func, transform) {
-  return function (arg) {
+  return function(arg) {
     return func(transform(arg));
   };
 }
@@ -1935,12 +1963,12 @@ var nativeGetSymbols = Object.getOwnPropertySymbols;
  * @param {Object} object The object to query.
  * @returns {Array} Returns the array of symbols.
  */
-var getSymbols$1 = !nativeGetSymbols ? stubArray : function (object) {
+var getSymbols$1 = !nativeGetSymbols ? stubArray : function(object) {
   if (object == null) {
     return [];
   }
   object = Object(object);
-  return arrayFilter(nativeGetSymbols(object), function (symbol) {
+  return arrayFilter(nativeGetSymbols(object), function(symbol) {
     return propertyIsEnumerable$1.call(object, symbol);
   });
 };
@@ -2007,7 +2035,7 @@ var nativeGetSymbols$1 = Object.getOwnPropertySymbols;
  * @param {Object} object The object to query.
  * @returns {Array} Returns the array of symbols.
  */
-var getSymbolsIn$1 = !nativeGetSymbols$1 ? stubArray$2 : function (object) {
+var getSymbolsIn$1 = !nativeGetSymbols$1 ? stubArray$2 : function(object) {
   var result = [];
   while (object) {
     arrayPush(result, getSymbols$2(object));
@@ -2157,28 +2185,27 @@ var weakMapCtorString = toSource$2(WeakMap);
 var getTag$1 = baseGetTag$4;
 
 // Fallback for data views, maps, sets, and weak maps in IE 11 and promises in Node.js < 6.
-if (DataView && getTag$1(new DataView(new ArrayBuffer(1))) != dataViewTag$2 || Map$3 && getTag$1(new Map$3()) != mapTag$2 || Promise$1 && getTag$1(Promise$1.resolve()) != promiseTag || Set && getTag$1(new Set()) != setTag$2 || WeakMap && getTag$1(new WeakMap()) != weakMapTag$2) {
-    getTag$1 = function (value) {
-        var result = baseGetTag$4(value),
-            Ctor = result == objectTag$2 ? value.constructor : undefined,
-            ctorString = Ctor ? toSource$2(Ctor) : '';
+if ((DataView && getTag$1(new DataView(new ArrayBuffer(1))) != dataViewTag$2) ||
+    (Map$3 && getTag$1(new Map$3) != mapTag$2) ||
+    (Promise$1 && getTag$1(Promise$1.resolve()) != promiseTag) ||
+    (Set && getTag$1(new Set) != setTag$2) ||
+    (WeakMap && getTag$1(new WeakMap) != weakMapTag$2)) {
+  getTag$1 = function(value) {
+    var result = baseGetTag$4(value),
+        Ctor = result == objectTag$2 ? value.constructor : undefined,
+        ctorString = Ctor ? toSource$2(Ctor) : '';
 
-        if (ctorString) {
-            switch (ctorString) {
-                case dataViewCtorString:
-                    return dataViewTag$2;
-                case mapCtorString:
-                    return mapTag$2;
-                case promiseCtorString:
-                    return promiseTag;
-                case setCtorString:
-                    return setTag$2;
-                case weakMapCtorString:
-                    return weakMapTag$2;
-            }
-        }
-        return result;
-    };
+    if (ctorString) {
+      switch (ctorString) {
+        case dataViewCtorString: return dataViewTag$2;
+        case mapCtorString: return mapTag$2;
+        case promiseCtorString: return promiseTag;
+        case setCtorString: return setTag$2;
+        case weakMapCtorString: return weakMapTag$2;
+      }
+    }
+    return result;
+  };
 }
 
 var _getTag = getTag$1;
@@ -2305,7 +2332,7 @@ function mapToArray$1(map) {
   var index = -1,
       result = Array(map.size);
 
-  map.forEach(function (value, key) {
+  map.forEach(function(value, key) {
     result[++index] = [key, value];
   });
   return result;
@@ -2331,7 +2358,7 @@ var CLONE_DEEP_FLAG$2 = 1;
  */
 function cloneMap$1(map, isDeep, cloneFunc) {
   var array = isDeep ? cloneFunc(mapToArray(map), CLONE_DEEP_FLAG$2) : mapToArray(map);
-  return arrayReduce(array, addMapEntry, new map.constructor());
+  return arrayReduce(array, addMapEntry, new map.constructor);
 }
 
 var _cloneMap = cloneMap$1;
@@ -2381,7 +2408,7 @@ function setToArray$1(set) {
   var index = -1,
       result = Array(set.size);
 
-  set.forEach(function (value) {
+  set.forEach(function(value) {
     result[++index] = value;
   });
   return result;
@@ -2407,7 +2434,7 @@ var CLONE_DEEP_FLAG$3 = 1;
  */
 function cloneSet$1(set, isDeep, cloneFunc) {
   var array = isDeep ? cloneFunc(setToArray(set), CLONE_DEEP_FLAG$3) : setToArray(set);
-  return arrayReduce$2(array, addSetEntry, new set.constructor());
+  return arrayReduce$2(array, addSetEntry, new set.constructor);
 }
 
 var _cloneSet = cloneSet$1;
@@ -2504,9 +2531,9 @@ function initCloneByTag$1(object, tag, cloneFunc, isDeep) {
     case dataViewTag$3:
       return cloneDataView(object, isDeep);
 
-    case float32Tag$2:case float64Tag$2:
-    case int8Tag$2:case int16Tag$2:case int32Tag$2:
-    case uint8Tag$2:case uint8ClampedTag$2:case uint16Tag$2:case uint32Tag$2:
+    case float32Tag$2: case float64Tag$2:
+    case int8Tag$2: case int16Tag$2: case int32Tag$2:
+    case uint8Tag$2: case uint8ClampedTag$2: case uint16Tag$2: case uint32Tag$2:
       return cloneTypedArray(object, isDeep);
 
     case mapTag$3:
@@ -2542,9 +2569,9 @@ var objectCreate = Object.create;
  * @param {Object} proto The object to inherit from.
  * @returns {Object} Returns the new object.
  */
-var baseCreate$1 = function () {
+var baseCreate$1 = (function() {
   function object() {}
-  return function (proto) {
+  return function(proto) {
     if (!isObject$5(proto)) {
       return {};
     }
@@ -2552,11 +2579,11 @@ var baseCreate$1 = function () {
       return objectCreate(proto);
     }
     object.prototype = proto;
-    var result = new object();
+    var result = new object;
     object.prototype = undefined;
     return result;
   };
-}();
+}());
 
 var _baseCreate = baseCreate$1;
 
@@ -2572,7 +2599,9 @@ var isPrototype$3 = _isPrototype;
  * @returns {Object} Returns the initialized clone.
  */
 function initCloneObject$1(object) {
-    return typeof object.constructor == 'function' && !isPrototype$3(object) ? baseCreate(getPrototype$2(object)) : {};
+  return (typeof object.constructor == 'function' && !isPrototype$3(object))
+    ? baseCreate(getPrototype$2(object))
+    : {};
 }
 
 var _initCloneObject = initCloneObject$1;
@@ -2633,8 +2662,19 @@ var uint32Tag = '[object Uint32Array]';
 
 /** Used to identify `toStringTag` values supported by `_.clone`. */
 var cloneableTags = {};
-cloneableTags[argsTag] = cloneableTags[arrayTag] = cloneableTags[arrayBufferTag] = cloneableTags[dataViewTag] = cloneableTags[boolTag] = cloneableTags[dateTag] = cloneableTags[float32Tag] = cloneableTags[float64Tag] = cloneableTags[int8Tag] = cloneableTags[int16Tag] = cloneableTags[int32Tag] = cloneableTags[mapTag] = cloneableTags[numberTag] = cloneableTags[objectTag] = cloneableTags[regexpTag] = cloneableTags[setTag] = cloneableTags[stringTag] = cloneableTags[symbolTag] = cloneableTags[uint8Tag] = cloneableTags[uint8ClampedTag] = cloneableTags[uint16Tag] = cloneableTags[uint32Tag] = true;
-cloneableTags[errorTag] = cloneableTags[funcTag] = cloneableTags[weakMapTag] = false;
+cloneableTags[argsTag] = cloneableTags[arrayTag] =
+cloneableTags[arrayBufferTag] = cloneableTags[dataViewTag] =
+cloneableTags[boolTag] = cloneableTags[dateTag] =
+cloneableTags[float32Tag] = cloneableTags[float64Tag] =
+cloneableTags[int8Tag] = cloneableTags[int16Tag] =
+cloneableTags[int32Tag] = cloneableTags[mapTag] =
+cloneableTags[numberTag] = cloneableTags[objectTag] =
+cloneableTags[regexpTag] = cloneableTags[setTag] =
+cloneableTags[stringTag] = cloneableTags[symbolTag] =
+cloneableTags[uint8Tag] = cloneableTags[uint8ClampedTag] =
+cloneableTags[uint16Tag] = cloneableTags[uint32Tag] = true;
+cloneableTags[errorTag] = cloneableTags[funcTag] =
+cloneableTags[weakMapTag] = false;
 
 /**
  * The base implementation of `_.clone` and `_.cloneDeep` which tracks
@@ -2680,10 +2720,12 @@ function baseClone$1(value, bitmask, customizer, key, object, stack) {
     if (isBuffer(value)) {
       return cloneBuffer(value, isDeep);
     }
-    if (tag == objectTag || tag == argsTag || isFunc && !object) {
-      result = isFlat || isFunc ? {} : initCloneObject(value);
+    if (tag == objectTag || tag == argsTag || (isFunc && !object)) {
+      result = (isFlat || isFunc) ? {} : initCloneObject(value);
       if (!isDeep) {
-        return isFlat ? copySymbolsIn(value, baseAssignIn(result, value)) : copySymbols(value, baseAssign(result, value));
+        return isFlat
+          ? copySymbolsIn(value, baseAssignIn(result, value))
+          : copySymbols(value, baseAssign(result, value));
       }
     } else {
       if (!cloneableTags[tag]) {
@@ -2693,17 +2735,19 @@ function baseClone$1(value, bitmask, customizer, key, object, stack) {
     }
   }
   // Check for circular references and return its corresponding clone.
-  stack || (stack = new Stack());
+  stack || (stack = new Stack);
   var stacked = stack.get(value);
   if (stacked) {
     return stacked;
   }
   stack.set(value, result);
 
-  var keysFunc = isFull ? isFlat ? getAllKeysIn : getAllKeys : isFlat ? keysIn : keys;
+  var keysFunc = isFull
+    ? (isFlat ? getAllKeysIn : getAllKeys)
+    : (isFlat ? keysIn : keys);
 
   var props = isArr ? undefined : keysFunc(value);
-  arrayEach(props || value, function (subValue, key) {
+  arrayEach(props || value, function(subValue, key) {
     if (props) {
       key = subValue;
       subValue = value[key];
@@ -2770,7 +2814,8 @@ var symbolTag$2 = '[object Symbol]';
  * // => false
  */
 function isSymbol$1(value) {
-    return typeof value == 'symbol' || isObjectLike$4(value) && baseGetTag$5(value) == symbolTag$2;
+  return typeof value == 'symbol' ||
+    (isObjectLike$4(value) && baseGetTag$5(value) == symbolTag$2);
 }
 
 var isSymbol_1 = isSymbol$1;
@@ -2795,10 +2840,12 @@ function isKey$1(value, object) {
     return false;
   }
   var type = typeof value;
-  if (type == 'number' || type == 'symbol' || type == 'boolean' || value == null || isSymbol(value)) {
+  if (type == 'number' || type == 'symbol' || type == 'boolean' ||
+      value == null || isSymbol(value)) {
     return true;
   }
-  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
+  return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+    (object != null && value in Object(object));
 }
 
 var _isKey = isKey$1;
@@ -2853,10 +2900,10 @@ var FUNC_ERROR_TEXT = 'Expected a function';
  * _.memoize.Cache = WeakMap;
  */
 function memoize$1(func, resolver) {
-  if (typeof func != 'function' || resolver != null && typeof resolver != 'function') {
+  if (typeof func != 'function' || (resolver != null && typeof resolver != 'function')) {
     throw new TypeError(FUNC_ERROR_TEXT);
   }
-  var memoized = function () {
+  var memoized = function() {
     var args = arguments,
         key = resolver ? resolver.apply(this, args) : args[0],
         cache = memoized.cache;
@@ -2868,7 +2915,7 @@ function memoize$1(func, resolver) {
     memoized.cache = cache.set(key, result) || cache;
     return result;
   };
-  memoized.cache = new (memoize$1.Cache || MapCache$2)();
+  memoized.cache = new (memoize$1.Cache || MapCache$2);
   return memoized;
 }
 
@@ -2891,7 +2938,7 @@ var MAX_MEMOIZE_SIZE = 500;
  * @returns {Function} Returns the new memoized function.
  */
 function memoizeCapped$1(func) {
-  var result = memoize(func, function (key) {
+  var result = memoize(func, function(key) {
     if (cache.size === MAX_MEMOIZE_SIZE) {
       cache.clear();
     }
@@ -2920,13 +2967,13 @@ var reEscapeChar = /\\(\\)?/g;
  * @param {string} string The string to convert.
  * @returns {Array} Returns the property path array.
  */
-var stringToPath$1 = memoizeCapped(function (string) {
+var stringToPath$1 = memoizeCapped(function(string) {
   var result = [];
   if (reLeadingDot.test(string)) {
     result.push('');
   }
-  string.replace(rePropName, function (match, number, quote, string) {
-    result.push(quote ? string.replace(reEscapeChar, '$1') : number || match);
+  string.replace(rePropName, function(match, number, quote, string) {
+    result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
   });
   return result;
 });
@@ -2987,8 +3034,8 @@ function baseToString$1(value) {
   if (isSymbol$2(value)) {
     return symbolToString ? symbolToString.call(value) : '';
   }
-  var result = value + '';
-  return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
 }
 
 var _baseToString = baseToString$1;
@@ -3060,8 +3107,8 @@ function toKey$1(value) {
   if (typeof value == 'string' || isSymbol$3(value)) {
     return value;
   }
-  var result = value + '';
-  return result == '0' && 1 / value == -INFINITY$1 ? '-0' : result;
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY$1) ? '-0' : result;
 }
 
 var _toKey = toKey$1;
@@ -3086,7 +3133,7 @@ function baseGet$1(object, path) {
   while (object != null && index < length) {
     object = object[toKey(path[index++])];
   }
-  return index && index == length ? object : undefined;
+  return (index && index == length) ? object : undefined;
 }
 
 var _baseGet = baseGet$1;
@@ -3160,7 +3207,9 @@ function baseSet$1(object, path, value, customizer) {
       var objValue = nested[key];
       newValue = customizer ? customizer(objValue, key, nested) : undefined;
       if (newValue === undefined) {
-        newValue = isObject$6(objValue) ? objValue : isIndex$2(path[index + 1]) ? [] : {};
+        newValue = isObject$6(objValue)
+          ? objValue
+          : (isIndex$2(path[index + 1]) ? [] : {});
       }
     }
     assignValue$3(nested, key, newValue);
@@ -3242,13 +3291,13 @@ function baseSlice$1(array, start, end) {
       length = array.length;
 
   if (start < 0) {
-    start = -start > length ? 0 : length + start;
+    start = -start > length ? 0 : (length + start);
   }
   end = end > length ? length : end;
   if (end < 0) {
     end += length;
   }
-  length = start > end ? 0 : end - start >>> 0;
+  length = start > end ? 0 : ((end - start) >>> 0);
   start >>>= 0;
 
   var result = Array(length);
@@ -3381,13 +3430,13 @@ var setCacheHas = _setCacheHas;
  * @param {Array} [values] The values to cache.
  */
 function SetCache$1(values) {
-    var index = -1,
-        length = values == null ? 0 : values.length;
+  var index = -1,
+      length = values == null ? 0 : values.length;
 
-    this.__data__ = new MapCache$3();
-    while (++index < length) {
-        this.add(values[index]);
-    }
+  this.__data__ = new MapCache$3;
+  while (++index < length) {
+    this.add(values[index]);
+  }
 }
 
 // Add methods to `SetCache`.
@@ -3411,7 +3460,7 @@ function baseFindIndex$1(array, predicate, fromIndex, fromRight) {
   var length = array.length,
       index = fromIndex + (fromRight ? 1 : -1);
 
-  while (fromRight ? index-- : ++index < length) {
+  while ((fromRight ? index-- : ++index < length)) {
     if (predicate(array[index], index, array)) {
       return index;
     }
@@ -3472,7 +3521,9 @@ var strictIndexOf = _strictIndexOf;
  * @returns {number} Returns the index of the matched value, else `-1`.
  */
 function baseIndexOf$1(array, value, fromIndex) {
-    return value === value ? strictIndexOf(array, value, fromIndex) : baseFindIndex(array, baseIsNaN, fromIndex);
+  return value === value
+    ? strictIndexOf(array, value, fromIndex)
+    : baseFindIndex(array, baseIsNaN, fromIndex);
 }
 
 var _baseIndexOf = baseIndexOf$1;
@@ -3567,23 +3618,32 @@ function baseIntersection$1(arrays, iteratee, comparator) {
       array = arrayMap$3(array, baseUnary$2(iteratee));
     }
     maxLength = nativeMin(array.length, maxLength);
-    caches[othIndex] = !comparator && (iteratee || length >= 120 && array.length >= 120) ? new SetCache(othIndex && array) : undefined;
+    caches[othIndex] = !comparator && (iteratee || (length >= 120 && array.length >= 120))
+      ? new SetCache(othIndex && array)
+      : undefined;
   }
   array = arrays[0];
 
   var index = -1,
       seen = caches[0];
 
-  outer: while (++index < length && result.length < maxLength) {
+  outer:
+  while (++index < length && result.length < maxLength) {
     var value = array[index],
         computed = iteratee ? iteratee(value) : value;
 
-    value = comparator || value !== 0 ? value : 0;
-    if (!(seen ? cacheHas(seen, computed) : includes(result, computed, comparator))) {
+    value = (comparator || value !== 0) ? value : 0;
+    if (!(seen
+          ? cacheHas(seen, computed)
+          : includes(result, computed, comparator)
+        )) {
       othIndex = othLength;
       while (--othIndex) {
         var cache = caches[othIndex];
-        if (!(cache ? cacheHas(cache, computed) : includes(arrays[othIndex], computed, comparator))) {
+        if (!(cache
+              ? cacheHas(cache, computed)
+              : includes(arrays[othIndex], computed, comparator))
+            ) {
           continue outer;
         }
       }
@@ -3632,14 +3692,10 @@ var identity_1 = identity$1;
  */
 function apply$1(func, thisArg, args) {
   switch (args.length) {
-    case 0:
-      return func.call(thisArg);
-    case 1:
-      return func.call(thisArg, args[0]);
-    case 2:
-      return func.call(thisArg, args[0], args[1]);
-    case 3:
-      return func.call(thisArg, args[0], args[1], args[2]);
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
   }
   return func.apply(thisArg, args);
 }
@@ -3661,8 +3717,8 @@ var nativeMax = Math.max;
  * @returns {Function} Returns the new function.
  */
 function overRest$1(func, start, transform) {
-  start = nativeMax(start === undefined ? func.length - 1 : start, 0);
-  return function () {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
     var args = arguments,
         index = -1,
         length = nativeMax(args.length - start, 0),
@@ -3703,7 +3759,7 @@ var _overRest = overRest$1;
  * // => true
  */
 function constant$1(value) {
-  return function () {
+  return function() {
     return value;
   };
 }
@@ -3722,7 +3778,7 @@ var identity$2 = identity_1;
  * @param {Function} string The `toString` result.
  * @returns {Function} Returns `func`.
  */
-var baseSetToString$1 = !defineProperty$2 ? identity$2 : function (func, string) {
+var baseSetToString$1 = !defineProperty$2 ? identity$2 : function(func, string) {
   return defineProperty$2(func, 'toString', {
     'configurable': true,
     'enumerable': false,
@@ -3753,7 +3809,7 @@ function shortOut$1(func) {
   var count = 0,
       lastCalled = 0;
 
-  return function () {
+  return function() {
     var stamp = nativeNow(),
         remaining = HOT_SPAN - (stamp - lastCalled);
 
@@ -3875,9 +3931,11 @@ var castArrayLikeObject = _castArrayLikeObject;
  * _.intersection([2, 1], [2, 3]);
  * // => [2]
  */
-var intersection = baseRest(function (arrays) {
-    var mapped = arrayMap$2(arrays, castArrayLikeObject);
-    return mapped.length && mapped[0] === arrays[0] ? baseIntersection(mapped) : [];
+var intersection = baseRest(function(arrays) {
+  var mapped = arrayMap$2(arrays, castArrayLikeObject);
+  return (mapped.length && mapped[0] === arrays[0])
+    ? baseIntersection(mapped)
+    : [];
 });
 
 var intersection_1 = intersection;
@@ -3920,16 +3978,18 @@ function baseDifference$1(array, values, iteratee, comparator) {
   if (comparator) {
     includes = arrayIncludesWith$2;
     isCommon = false;
-  } else if (values.length >= LARGE_ARRAY_SIZE$1) {
+  }
+  else if (values.length >= LARGE_ARRAY_SIZE$1) {
     includes = cacheHas$2;
     isCommon = false;
     values = new SetCache$2(values);
   }
-  outer: while (++index < length) {
+  outer:
+  while (++index < length) {
     var value = array[index],
         computed = iteratee == null ? value : iteratee(value);
 
-    value = comparator || value !== 0 ? value : 0;
+    value = (comparator || value !== 0) ? value : 0;
     if (isCommon && computed === computed) {
       var valuesIndex = valuesLength;
       while (valuesIndex--) {
@@ -3938,7 +3998,8 @@ function baseDifference$1(array, values, iteratee, comparator) {
         }
       }
       result.push(value);
-    } else if (!includes(values, computed, comparator)) {
+    }
+    else if (!includes(values, computed, comparator)) {
       result.push(value);
     }
   }
@@ -3962,7 +4023,8 @@ var spreadableSymbol = Symbol$6 ? Symbol$6.isConcatSpreadable : undefined;
  * @returns {boolean} Returns `true` if `value` is flattenable, else `false`.
  */
 function isFlattenable$1(value) {
-    return isArray$7(value) || isArguments$2(value) || !!(spreadableSymbol && value && value[spreadableSymbol]);
+  return isArray$7(value) || isArguments$2(value) ||
+    !!(spreadableSymbol && value && value[spreadableSymbol]);
 }
 
 var _isFlattenable = isFlattenable$1;
@@ -4032,8 +4094,10 @@ var isArrayLikeObject$2 = isArrayLikeObject_1;
  * _.difference([2, 1], [2, 3]);
  * // => [1]
  */
-var difference = baseRest$2(function (array, values) {
-    return isArrayLikeObject$2(array) ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject$2, true)) : [];
+var difference = baseRest$2(function(array, values) {
+  return isArrayLikeObject$2(array)
+    ? baseDifference(array, baseFlatten(values, 1, isArrayLikeObject$2, true))
+    : [];
 });
 
 var difference_1 = difference;
@@ -4070,7 +4134,7 @@ function create(reportData) {
 
       if (report.diff.a_not_in_b.length === 0) {
         report.matchStatus = 'all-in-a';
-        report.prose.summary += 'All ' + printRows(report.diff.a.length) + ' in A found a match. ';
+        report.prose.summary += 'All ' + printRows(report.diff.a.length) + ' in A matched in B. ';
       } else {
         report.prose.summary += printRows(report.diff.a_not_in_b.length) + ' in A not in B. ';
         report.prose.full += 'A not in B: ' + report.diff.a_not_in_b.join(', ') + '. ';
@@ -4078,7 +4142,7 @@ function create(reportData) {
 
       if (report.diff.b_not_in_a.length === 0) {
         report.matchStatus = 'all-in-b';
-        report.prose.summary += 'All ' + printRows(report.diff.b.length) + ' in B in A found a match. ';
+        report.prose.summary += 'All ' + printRows(report.diff.b.length) + ' in B matched in A. ';
       } else {
         report.prose.summary += printRows(report.diff.b_not_in_a.length) + ' in B not in A. ';
         report.prose.full += 'B not in A: ' + report.diff.b_not_in_a.join(', ') + '. ';
