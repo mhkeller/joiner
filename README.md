@@ -107,7 +107,7 @@ All joins return an object with the following structure:
 }
 ````
 
-<a href="#joiner" id="joiner">#</a> **joiner**(options)
+<a href="#joiner-api" id="joiner-api">#</a> **joiner**(options)
 
 Perform a left join on the two array of object json datasets. It performs a deep clone using [lodash.clonedeep](https://www.npmjs.com/package/lodash.clonedeep) of the objects you pass in and returns the new object.
 
