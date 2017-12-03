@@ -10,7 +10,8 @@
   "scripts": {
     "test": "standard src/**/* bin/**/* && mocha",
     "build": "rollup -c rollup.config.js",
-    "postbuild": "uglifyjs dist/joiner.js -o dist/joiner.min.js --comments /^\\\\s+@/"
+    "postbuild": "uglifyjs dist/joiner.js -o dist/joiner.min.js --comments /^\\\\s+@/",
+    "dev": "npm run build -- -w"
   },
   "bin": {
     "joiner": "./bin/index.js"
