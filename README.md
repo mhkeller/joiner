@@ -6,6 +6,8 @@ Joiner
 
 A simple utility for SQL-like joins with Json or geoJson data in Node, the browser and on the command line. Also creates join reports so you can know how successful a given join is.
 
+Try it in the browser --> https://mhkeller.github.io/join.report/
+
 ```js
 var data = [
   { "id": "1", "name": "UT" },
