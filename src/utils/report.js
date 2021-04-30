@@ -12,7 +12,13 @@ function create (reportData) {
   var a = reportData.aKeys.sort()
   var b = reportData.bKeys.sort()
 
-  var report = { diff: {}, prose: {} }
+  var report = {
+    diff: {},
+    prose: {
+      summary: '',
+      full: ''
+    }
+  }
   report.diff.a = a
   report.diff.b = b
   report.diff.a_and_b = intersection(a, b)

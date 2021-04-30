@@ -1,4 +1,4 @@
-// https://github.com/mhkeller/joiner Version 2.1.2. Copyright 2017 Michael Keller.
+// https://github.com/mhkeller/joiner Version 2.1.2. Copyright 2021 Michael Keller.
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
@@ -1332,8 +1332,10 @@ var reIsUint = /^(?:0|[1-9]\d*)$/;
  * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
  */
 function isIndex$1(value, length) {
+  var type = typeof value;
   length = length == null ? MAX_SAFE_INTEGER : length;
-  return !!length && (typeof value == 'number' || reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
+
+  return !!length && (type == 'number' || type != 'symbol' && reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
 }
 
 var _isIndex = isIndex$1;
@@ -1455,6 +1457,14 @@ var freeProcess = moduleExports && freeGlobal.process;
 /** Used to access faster Node.js helpers. */
 var nodeUtil = function () {
   try {
+    // Use `util.types` for Node.js 10+.
+    var types = freeModule && freeModule.require && freeModule.require('util').types;
+
+    if (types) {
+      return types;
+    }
+
+    // Legacy `process.binding('util')` for Node.js < 10.
     return freeProcess && freeProcess.binding && freeProcess.binding('util');
   } catch (e) {}
 }();
@@ -2198,7 +2208,7 @@ var hasOwnProperty$9 = objectProto$12.hasOwnProperty;
  */
 function initCloneArray$1(array) {
   var length = array.length,
-      result = array.constructor(length);
+      result = new array.constructor(length);
 
   // Add properties assigned by `RegExp#exec`.
   if (length && typeof array[0] == 'string' && hasOwnProperty$9.call(array, 'index')) {
@@ -2251,91 +2261,6 @@ function cloneDataView$1(dataView, isDeep) {
 
 var _cloneDataView = cloneDataView$1;
 
-/**
- * Adds the key-value `pair` to `map`.
- *
- * @private
- * @param {Object} map The map to modify.
- * @param {Array} pair The key-value pair to add.
- * @returns {Object} Returns `map`.
- */
-function addMapEntry$1(map, pair) {
-  // Don't return `map.set` because it's not chainable in IE 11.
-  map.set(pair[0], pair[1]);
-  return map;
-}
-
-var _addMapEntry = addMapEntry$1;
-
-/**
- * A specialized version of `_.reduce` for arrays without support for
- * iteratee shorthands.
- *
- * @private
- * @param {Array} [array] The array to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @param {*} [accumulator] The initial value.
- * @param {boolean} [initAccum] Specify using the first element of `array` as
- *  the initial value.
- * @returns {*} Returns the accumulated value.
- */
-function arrayReduce$1(array, iteratee, accumulator, initAccum) {
-  var index = -1,
-      length = array == null ? 0 : array.length;
-
-  if (initAccum && length) {
-    accumulator = array[++index];
-  }
-  while (++index < length) {
-    accumulator = iteratee(accumulator, array[index], index, array);
-  }
-  return accumulator;
-}
-
-var _arrayReduce = arrayReduce$1;
-
-/**
- * Converts `map` to its key-value pairs.
- *
- * @private
- * @param {Object} map The map to convert.
- * @returns {Array} Returns the key-value pairs.
- */
-function mapToArray$1(map) {
-  var index = -1,
-      result = Array(map.size);
-
-  map.forEach(function (value, key) {
-    result[++index] = [key, value];
-  });
-  return result;
-}
-
-var _mapToArray = mapToArray$1;
-
-var addMapEntry = _addMapEntry;
-var arrayReduce = _arrayReduce;
-var mapToArray = _mapToArray;
-
-/** Used to compose bitmasks for cloning. */
-var CLONE_DEEP_FLAG$2 = 1;
-
-/**
- * Creates a clone of `map`.
- *
- * @private
- * @param {Object} map The map to clone.
- * @param {Function} cloneFunc The function to clone values.
- * @param {boolean} [isDeep] Specify a deep clone.
- * @returns {Object} Returns the cloned map.
- */
-function cloneMap$1(map, isDeep, cloneFunc) {
-  var array = isDeep ? cloneFunc(mapToArray(map), CLONE_DEEP_FLAG$2) : mapToArray(map);
-  return arrayReduce(array, addMapEntry, new map.constructor());
-}
-
-var _cloneMap = cloneMap$1;
-
 /** Used to match `RegExp` flags from their coerced string values. */
 var reFlags = /\w*$/;
 
@@ -2353,64 +2278,6 @@ function cloneRegExp$1(regexp) {
 }
 
 var _cloneRegExp = cloneRegExp$1;
-
-/**
- * Adds `value` to `set`.
- *
- * @private
- * @param {Object} set The set to modify.
- * @param {*} value The value to add.
- * @returns {Object} Returns `set`.
- */
-function addSetEntry$1(set, value) {
-  // Don't return `set.add` because it's not chainable in IE 11.
-  set.add(value);
-  return set;
-}
-
-var _addSetEntry = addSetEntry$1;
-
-/**
- * Converts `set` to an array of its values.
- *
- * @private
- * @param {Object} set The set to convert.
- * @returns {Array} Returns the values.
- */
-function setToArray$1(set) {
-  var index = -1,
-      result = Array(set.size);
-
-  set.forEach(function (value) {
-    result[++index] = value;
-  });
-  return result;
-}
-
-var _setToArray = setToArray$1;
-
-var addSetEntry = _addSetEntry;
-var arrayReduce$2 = _arrayReduce;
-var setToArray = _setToArray;
-
-/** Used to compose bitmasks for cloning. */
-var CLONE_DEEP_FLAG$3 = 1;
-
-/**
- * Creates a clone of `set`.
- *
- * @private
- * @param {Object} set The set to clone.
- * @param {Function} cloneFunc The function to clone values.
- * @param {boolean} [isDeep] Specify a deep clone.
- * @returns {Object} Returns the cloned set.
- */
-function cloneSet$1(set, isDeep, cloneFunc) {
-  var array = isDeep ? cloneFunc(setToArray(set), CLONE_DEEP_FLAG$3) : setToArray(set);
-  return arrayReduce$2(array, addSetEntry, new set.constructor());
-}
-
-var _cloneSet = cloneSet$1;
 
 var Symbol$4 = _Symbol;
 
@@ -2450,9 +2317,7 @@ var _cloneTypedArray = cloneTypedArray$1;
 
 var cloneArrayBuffer = _cloneArrayBuffer;
 var cloneDataView = _cloneDataView;
-var cloneMap = _cloneMap;
 var cloneRegExp = _cloneRegExp;
-var cloneSet = _cloneSet;
 var cloneSymbol = _cloneSymbol;
 var cloneTypedArray = _cloneTypedArray;
 
@@ -2482,16 +2347,15 @@ var uint32Tag$2 = '[object Uint32Array]';
  * Initializes an object clone based on its `toStringTag`.
  *
  * **Note:** This function only supports cloning values with tags of
- * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+ * `Boolean`, `Date`, `Error`, `Map`, `Number`, `RegExp`, `Set`, or `String`.
  *
  * @private
  * @param {Object} object The object to clone.
  * @param {string} tag The `toStringTag` of the object to clone.
- * @param {Function} cloneFunc The function to clone values.
  * @param {boolean} [isDeep] Specify a deep clone.
  * @returns {Object} Returns the initialized clone.
  */
-function initCloneByTag$1(object, tag, cloneFunc, isDeep) {
+function initCloneByTag$1(object, tag, isDeep) {
   var Ctor = object.constructor;
   switch (tag) {
     case arrayBufferTag$2:
@@ -2510,7 +2374,7 @@ function initCloneByTag$1(object, tag, cloneFunc, isDeep) {
       return cloneTypedArray(object, isDeep);
 
     case mapTag$3:
-      return cloneMap(object, isDeep, cloneFunc);
+      return new Ctor();
 
     case numberTag$2:
     case stringTag$2:
@@ -2520,7 +2384,7 @@ function initCloneByTag$1(object, tag, cloneFunc, isDeep) {
       return cloneRegExp(object);
 
     case setTag$3:
-      return cloneSet(object, isDeep, cloneFunc);
+      return new Ctor();
 
     case symbolTag$1:
       return cloneSymbol(object);
@@ -2577,6 +2441,100 @@ function initCloneObject$1(object) {
 
 var _initCloneObject = initCloneObject$1;
 
+var getTag$2 = _getTag;
+var isObjectLike$4 = isObjectLike_1;
+
+/** `Object#toString` result references. */
+var mapTag$4 = '[object Map]';
+
+/**
+ * The base implementation of `_.isMap` without Node.js optimizations.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a map, else `false`.
+ */
+function baseIsMap$1(value) {
+  return isObjectLike$4(value) && getTag$2(value) == mapTag$4;
+}
+
+var _baseIsMap = baseIsMap$1;
+
+var baseIsMap = _baseIsMap;
+var baseUnary$2 = _baseUnary;
+var nodeUtil$1 = _nodeUtil;
+
+/* Node.js helper references. */
+var nodeIsMap = nodeUtil$1 && nodeUtil$1.isMap;
+
+/**
+ * Checks if `value` is classified as a `Map` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.3.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a map, else `false`.
+ * @example
+ *
+ * _.isMap(new Map);
+ * // => true
+ *
+ * _.isMap(new WeakMap);
+ * // => false
+ */
+var isMap$1 = nodeIsMap ? baseUnary$2(nodeIsMap) : baseIsMap;
+
+var isMap_1 = isMap$1;
+
+var getTag$3 = _getTag;
+var isObjectLike$5 = isObjectLike_1;
+
+/** `Object#toString` result references. */
+var setTag$4 = '[object Set]';
+
+/**
+ * The base implementation of `_.isSet` without Node.js optimizations.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a set, else `false`.
+ */
+function baseIsSet$1(value) {
+  return isObjectLike$5(value) && getTag$3(value) == setTag$4;
+}
+
+var _baseIsSet = baseIsSet$1;
+
+var baseIsSet = _baseIsSet;
+var baseUnary$3 = _baseUnary;
+var nodeUtil$2 = _nodeUtil;
+
+/* Node.js helper references. */
+var nodeIsSet = nodeUtil$2 && nodeUtil$2.isSet;
+
+/**
+ * Checks if `value` is classified as a `Set` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.3.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a set, else `false`.
+ * @example
+ *
+ * _.isSet(new Set);
+ * // => true
+ *
+ * _.isSet(new WeakSet);
+ * // => false
+ */
+var isSet$1 = nodeIsSet ? baseUnary$3(nodeIsSet) : baseIsSet;
+
+var isSet_1 = isSet$1;
+
 var Stack = _Stack;
 var arrayEach = _arrayEach;
 var assignValue = _assignValue;
@@ -2594,8 +2552,11 @@ var initCloneByTag = _initCloneByTag;
 var initCloneObject = _initCloneObject;
 var isArray = isArray_1;
 var isBuffer = isBuffer_1;
+var isMap = isMap_1;
 var isObject = isObject_1;
+var isSet = isSet_1;
 var keys = keys_1;
+var keysIn = keysIn_1;
 
 /** Used to compose bitmasks for cloning. */
 var CLONE_DEEP_FLAG$1 = 1;
@@ -2689,7 +2650,7 @@ function baseClone$1(value, bitmask, customizer, key, object, stack) {
       if (!cloneableTags[tag]) {
         return object ? value : {};
       }
-      result = initCloneByTag(value, tag, baseClone$1, isDeep);
+      result = initCloneByTag(value, tag, isDeep);
     }
   }
   // Check for circular references and return its corresponding clone.
@@ -2699,6 +2660,16 @@ function baseClone$1(value, bitmask, customizer, key, object, stack) {
     return stacked;
   }
   stack.set(value, result);
+
+  if (isSet(value)) {
+    value.forEach(function (subValue) {
+      result.add(baseClone$1(subValue, bitmask, customizer, subValue, value, stack));
+    });
+  } else if (isMap(value)) {
+    value.forEach(function (subValue, key) {
+      result.set(key, baseClone$1(subValue, bitmask, customizer, key, value, stack));
+    });
+  }
 
   var keysFunc = isFull ? isFlat ? getAllKeysIn : getAllKeys : isFlat ? keysIn : keys;
 
@@ -2747,7 +2718,7 @@ function cloneDeep(value) {
 var clonedeep = cloneDeep;
 
 var baseGetTag$5 = _baseGetTag;
-var isObjectLike$4 = isObjectLike_1;
+var isObjectLike$6 = isObjectLike_1;
 
 /** `Object#toString` result references. */
 var symbolTag$2 = '[object Symbol]';
@@ -2770,7 +2741,7 @@ var symbolTag$2 = '[object Symbol]';
  * // => false
  */
 function isSymbol$1(value) {
-    return typeof value == 'symbol' || isObjectLike$4(value) && baseGetTag$5(value) == symbolTag$2;
+    return typeof value == 'symbol' || isObjectLike$6(value) && baseGetTag$5(value) == symbolTag$2;
 }
 
 var isSymbol_1 = isSymbol$1;
@@ -2907,7 +2878,6 @@ var _memoizeCapped = memoizeCapped$1;
 var memoizeCapped = _memoizeCapped;
 
 /** Used to match property names within property paths. */
-var reLeadingDot = /^\./;
 var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
 
 /** Used to match backslashes in property paths. */
@@ -2922,11 +2892,11 @@ var reEscapeChar = /\\(\\)?/g;
  */
 var stringToPath$1 = memoizeCapped(function (string) {
   var result = [];
-  if (reLeadingDot.test(string)) {
-    result.push('');
-  }
-  string.replace(rePropName, function (match, number, quote, string) {
-    result.push(quote ? string.replace(reEscapeChar, '$1') : number || match);
+  if (string.charCodeAt(0) === 46 /* . */) {
+      result.push('');
+    }
+  string.replace(rePropName, function (match, number, quote, subString) {
+    result.push(quote ? subString.replace(reEscapeChar, '$1') : number || match);
   });
   return result;
 });
@@ -3155,6 +3125,10 @@ function baseSet$1(object, path, value, customizer) {
   while (nested != null && ++index < length) {
     var key = toKey$2(path[index]),
         newValue = value;
+
+    if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+      return object;
+    }
 
     if (index != lastIndex) {
       var objValue = nested[key];
@@ -3536,7 +3510,7 @@ var SetCache = _SetCache;
 var arrayIncludes = _arrayIncludes;
 var arrayIncludesWith = _arrayIncludesWith;
 var arrayMap$3 = _arrayMap;
-var baseUnary$2 = _baseUnary;
+var baseUnary$4 = _baseUnary;
 var cacheHas = _cacheHas;
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
@@ -3564,7 +3538,7 @@ function baseIntersection$1(arrays, iteratee, comparator) {
   while (othIndex--) {
     var array = arrays[othIndex];
     if (othIndex && iteratee) {
-      array = arrayMap$3(array, baseUnary$2(iteratee));
+      array = arrayMap$3(array, baseUnary$4(iteratee));
     }
     maxLength = nativeMin(array.length, maxLength);
     caches[othIndex] = !comparator && (iteratee || length >= 120 && array.length >= 120) ? new SetCache(othIndex && array) : undefined;
@@ -3805,7 +3779,7 @@ function baseRest$1(func, start) {
 var _baseRest = baseRest$1;
 
 var isArrayLike$3 = isArrayLike_1;
-var isObjectLike$5 = isObjectLike_1;
+var isObjectLike$7 = isObjectLike_1;
 
 /**
  * This method is like `_.isArrayLike` except that it also checks if `value`
@@ -3833,7 +3807,7 @@ var isObjectLike$5 = isObjectLike_1;
  * // => false
  */
 function isArrayLikeObject$1(value) {
-  return isObjectLike$5(value) && isArrayLike$3(value);
+  return isObjectLike$7(value) && isArrayLike$3(value);
 }
 
 var isArrayLikeObject_1 = isArrayLikeObject$1;
@@ -3886,7 +3860,7 @@ var SetCache$2 = _SetCache;
 var arrayIncludes$2 = _arrayIncludes;
 var arrayIncludesWith$2 = _arrayIncludesWith;
 var arrayMap$4 = _arrayMap;
-var baseUnary$3 = _baseUnary;
+var baseUnary$5 = _baseUnary;
 var cacheHas$2 = _cacheHas;
 
 /** Used as the size to enable large array optimizations. */
@@ -3915,7 +3889,7 @@ function baseDifference$1(array, values, iteratee, comparator) {
     return result;
   }
   if (iteratee) {
-    values = arrayMap$4(values, baseUnary$3(iteratee));
+    values = arrayMap$4(values, baseUnary$5(iteratee));
   }
   if (comparator) {
     includes = arrayIncludesWith$2;
@@ -4049,7 +4023,13 @@ function create(reportData) {
   var a = reportData.aKeys.sort();
   var b = reportData.bKeys.sort();
 
-  var report = { diff: {}, prose: {} };
+  var report = {
+    diff: {},
+    prose: {
+      summary: '',
+      full: ''
+    }
+  };
   report.diff.a = a;
   report.diff.b = b;
   report.diff.a_and_b = intersection_1(a, b);
