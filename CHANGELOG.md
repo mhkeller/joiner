@@ -1,6 +1,16 @@
 Changelog
 ===
 
+# 2.1.3
+
+> 2021-04-30
+
+Fix [an error](https://github.com/mhkeller/joiner/issues/11) that was caused where `report.prose.full` was `undefined` and couldn't be `.trim()`ed. Update the build process to use Uglify 3.x
+
+* [309ea49318d6548554a797de5d51cafe4b5c3bc8](https://github.com/mhkeller/joiner/commit/309ea49318d6548554a797de5d51cafe4b5c3bc8)
+* [c37152db5f34b1f537bf1fa8ff778ff8707ff533](https://github.com/mhkeller/joiner/commit/c37152db5f34b1f537bf1fa8ff778ff8707ff533)
+
+
 # 2.1.2
 
 > 2017-03-14
