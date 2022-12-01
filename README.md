@@ -36,7 +36,7 @@ console.log(joinedData)
       { a: [ 'NM', 'UT' ],
         b: [ 'NM' ],
         a_and_b: [ 'NM' ],
-        a_not_in_b: [ 'UT' ],,
+        a_not_in_b: [ 'UT' ],
         b_not_in_a: []
       },
      prose:
